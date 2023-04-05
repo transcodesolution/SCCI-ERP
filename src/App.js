@@ -1,21 +1,16 @@
 import React from 'react';
 import './App.css';
 import Login from './Components/Login';
-// import { useSelector } from 'react-redux';
-// import { selectUser } from './Features/userSlice';
-// import Logout from './Components/Logout';
-// import Admin from './Page/Admin/Admin';
-import Sidebar from './Components/Commom/Sidebar';
-import Header from './Components/Commom/Header';
+import { useSelector } from 'react-redux';
+import MainRoute from './Components/Route/MainRoute';
 function App() {
-  // const user = useSelector(selectUser);
-    // {user ? <Login/> : <Logout/>}      
+  const { token } = useSelector((state) => state.auth);
+  console.log(token)
 
   return (
     <div className="App">
-    <Login/>
-    <Header/>
-    <Sidebar/>
+      {!token ? <Login /> : <> <MainRoute /></>}
+
     </div>
   );
 }

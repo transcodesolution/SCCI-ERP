@@ -6,6 +6,7 @@ export const initialState = {
   isButtonDisabled: true,
   helperText: "",
   isError: false,
+  token: ''
 };
 
 const loginSlice = createSlice({
@@ -43,7 +44,7 @@ const loginSlice = createSlice({
 //   loginFailed,
 //   setIsError,
 // } = loginSlice.actions;
-export const { setEmail, setPassword, setIsButtonDisabled, loginSuccess, loginFailed, setIsError} = loginSlice.actions;
+export const { setEmail, setPassword, setIsButtonDisabled, loginSuccess, loginFailed, setIsError } = loginSlice.actions;
 // export { setEmail, setPassword, setIsButtonDisabled, loginSuccess, loginFailed, setIsError };
 export default loginSlice.reducer;
 

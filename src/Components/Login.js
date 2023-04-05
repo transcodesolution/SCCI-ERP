@@ -1,53 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import CardHeader from '@material-ui/core/CardHeader';
-import Button from '@material-ui/core/Button';
+import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { useForm } from 'react-hook-form';
 import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Box } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-// import { RootState } from '../../redux/store';
-import {  setEmail, setPassword, setIsButtonDisabled, loginSuccess, loginFailed } from '../Features/userSlice';
-import {initialState} from '../Features/userSlice'; 
-const useStyles = makeStyles((theme) =>
-    createStyles({
-        container: {
-            display: 'flex',
-            flexWrap: 'wrap',
-            width: 400,
-            margin: `${theme.spacing(0)} auto`
-        },
-        loginBtn: {
-            marginTop: theme.spacing(2),
-            flexGrow: 10
-        },
-        header: {
-            textAlign: 'center',
-            background: '#212121',
-            color: '#fff',
-        },
-    })
-);
+import { useDispatch } from 'react-redux';
+import { MDBBtn, MDBCard, MDBCardBody, MDBCheckbox, MDBContainer, MDBInput } from 'mdb-react-ui-kit';
+import { Formik, Form, Field } from 'formik';
+import { setLogin } from '../Reducers/authReducer';
+
 
 const Login = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const classes = useStyles();
+    const [registration, setRegistration] = useState({
+        email: '',
+        password: ''
+    })
 
-    // const [isLoggedIn, setIsLoggedIn] = useState(true);
-
-    const loginState = useSelector((state) => state.loginState);
-    console.log("loginState", loginState);
 
     // validations
-    const registerSchema = yup.object().shape({
+    const loginSchema = yup.object().shape({
         email: yup
             .string()
             .email("Please provide a valid email address")
@@ -60,91 +31,126 @@ const Login = () => {
             .oneOf([('password')], 'Passwords does not match'),
     });
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: yupResolver(registerSchema),
-    });
-
-    useEffect(() => {
-        if (loginState.email.trim() && loginState.password.trim()) {
-            dispatch(setIsButtonDisabled(false));
-        } else {
-            dispatch(setIsButtonDisabled(true));
-        }
-    }, [dispatch, loginState.email, loginState.password]);
 
     const handleLogin = (e) => {
-        console.log(e);
-        if (loginState.email === 'kunal.aage@seaflux.tech' && loginState.password === 'password') {
-            dispatch(loginSuccess('Login Successfully'));
-            navigate("/dashboard");
-        } else {
-            dispatch(loginFailed('Incorrect email or password'));
-        }
+        console.log(e)
+        dispatch(setLogin({ token: '123' }))
+
     };
 
-    const handleEmailChange = (event) => {
-        dispatch(setEmail(event.target.value));
-    };
 
-    const handlePasswordChange = (event) => {
-        dispatch(setPassword(event.target.value));
-    };
-return (
-        <form className={classes.container} noValidate autoComplete="off">
-            <Box
-                sx={{
-                    width: "120%",
-                    maxWidth: '100%',
-                    ml: 0,
-                    mb: "-7rem"
-                }}>
-                <Card style={{ marginTop: "15rem" }}>
-                    <CardHeader className={classes.header} title="Huia Capital" />
-                    <CardContent>
-                        <div>
-                            <TextField
-                                error={initialState.isError}
-                                fullWidth
-                                id="email"
-                                type="email"
-                                label="Email"
-                                placeholder="Email"
-                                margin="normal"
-                                // helperText={state.helperText}
-                                {...register('email')}
-                                onChange={handleEmailChange}
-                            />
-                            <div style={{ color: "red" }}>{errors.email?.message}</div>
-                            <TextField
-                                error={initialState.isError}
-                                fullWidth
-                                type="password"
-                                id="password"
-                                label="Password"
-                                placeholder="Password"
-                                margin="normal"
-                                // helperText={state.helperText}
-                                {...register('password')}
-                                onChange={handlePasswordChange}
-                            />
-                            <div style={{ color: "red" }}>{errors.password?.message}</div>
-                        </div>
-                    </CardContent>
-                    <CardActions>
-                        <Button
-                            variant="contained"
-                            size="large"
-                            color="secondary"
-                            className={classes.loginBtn}
-                            onClick={handleSubmit(handleLogin)}
-                            disabled={loginState.isButtonDisabled}
-                        >
-                            Login
-                        </Button>
-                    </CardActions>
-                </Card>
-            </Box>
-        </form>
+    return (
+        <>
+            {/* <form className={classes.container} noValidate autoComplete="off">
+                <Box
+                    sx={{
+                        width: "120%",
+                        maxWidth: '100%',
+                        ml: 0,
+                        mb: "-7rem"
+                    }}>
+                    <Card style={{ marginTop: "15rem" }}>
+                        <CardHeader className={classes.header} title="Huia Capital" />
+                        <CardContent>
+                            <div>
+                                <TextField
+                                    error={initialState.isError}
+                                    fullWidth
+                                    id="email"
+                                    type="email"
+                                    label="Email"
+                                    placeholder="Email"
+                                    margin="normal"
+                                    // helperText={state.helperText}
+                                    {...register('email')}
+                                    onChange={handleEmailChange}
+                                />
+                                <div style={{ color: "red" }}>{errors.email?.message}</div>
+                                <TextField
+                                    error={initialState.isError}
+                                    fullWidth
+                                    type="password"
+                                    id="password"
+                                    label="Password"
+                                    placeholder="Password"
+                                    margin="normal"
+                                    // helperText={state.helperText}
+                                    {...register('password')}
+                                    onChange={handlePasswordChange}
+                                />
+                                <div style={{ color: "red" }}>{errors.password?.message}</div>
+                            </div>
+                        </CardContent>
+                        <CardActions>
+                            <Button
+                                variant="contained"
+                                size="large"
+                                color="secondary"
+                                className={classes.loginBtn}
+                                onClick={handleSubmit(handleLogin)}
+                                disabled={loginState.isButtonDisabled}
+                            >
+                                Login
+                            </Button>
+                        </CardActions>
+                    </Card>
+                </Box>
+            </form> */}
+            <Formik initialValues={registration} onSubmit={handleLogin}>
+                {
+                    ({ values, isSubmitting }) => {
+                        return <Form>
+                            {
+                                console.log(values)
+                            }
+                            <MDBContainer fluid>
+
+                                <div className="p-5 bg-image" style={{ backgroundImage: 'url(https://mdbootstrap.com/img/new/textures/full/171.jpg)', height: '300px' }}></div>
+
+                                <MDBCard className='mx-5 mb-5 p-5 shadow-5' style={{ marginTop: '-100px', background: 'hsla(0, 0%, 100%, 0.8)', backdropFilter: 'blur(30px)' }}>
+                                    <MDBCardBody className='p-5 text-center'>
+
+                                        <h2 className="fw-bold mb-5">Log In</h2>
+
+
+                                        <Field name='email'>
+                                            {({ field, meta }) => (
+                                                <MDBInput wrapperClass='mb-4' id='email' type='email' label="Email" {...field} invalid={meta.touched && meta.error} />
+                                            )}
+                                        </Field>
+                                        <Field name='password'>
+                                            {({ field, meta }) => (
+                                                <MDBInput wrapperClass='mb-4' name='password' id='password' type='password' label="Password" {...field} invalid={meta.touched && meta.error} />
+                                            )}
+                                        </Field>
+
+
+                                        <Field name="firstName">
+                                            {({ field, meta }) => (
+                                                <div>
+
+                                                    <MDBBtn className='w-100 mb-4' type='submit' size='md' disabled={isSubmitting}>Log  IN</MDBBtn>
+
+                                                </div>
+                                            )}
+                                        </Field>
+                                      
+
+                                        <div className="text-center">
+
+
+                                        </div>
+
+                                    </MDBCardBody>
+                                </MDBCard>
+
+                            </MDBContainer>
+                        </Form>
+                    }
+                }
+
+            </Formik >
+        </>
     );
 }
 
