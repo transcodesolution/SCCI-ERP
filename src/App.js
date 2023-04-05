@@ -1,23 +1,21 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
-
+import Login from './Components/Login';
+// import { useSelector } from 'react-redux';
+// import { selectUser } from './Features/userSlice';
+// import Logout from './Components/Logout';
+// import Admin from './Page/Admin/Admin';
+import Sidebar from './Components/Commom/Sidebar';
+import Header from './Components/Commom/Header';
 function App() {
+  // const user = useSelector(selectUser);
+    // {user ? <Login/> : <Logout/>}      
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <Login/>
+    <Header/>
+    <Sidebar/>
     </div>
   );
 }
