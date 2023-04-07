@@ -1,6 +1,8 @@
 
 import Dashboard from "../../Page/Dashboard/Dashboard"
 import Memberships from "../../Page/Memberships/Memberships"
+import Sccimembers from "../../Page/Sccimembers/Sccimembers"
+import Login from "../Login"
 
 export const data = [
     {
@@ -9,7 +11,7 @@ export const data = [
     },
     {
         routeName:'sccimembers',
-        component:<sccimembers/>
+        component:<Sccimembers/>
     },
     {
         routeName:'memberships',
@@ -17,4 +19,10 @@ export const data = [
     }
 ]
 
+export const authData = [
+    {
+        routeName: 'login',
+        component: <Login />
+    },
+]
 

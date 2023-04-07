@@ -1,15 +1,23 @@
+import {
+    FiHome,
+    FiTrendingUp,
+    FiCompass,   
+  } from 'react-icons/fi';
 export const data = [
     {
         name: 'Dashboard',
-        route: 'dashboar'
+        route: 'dashboard',
+        icon: FiHome,
     },
     {
-        name: 'SCCI Members',
-        route: 'sccimembers'
+        name: 'Sccimembers',
+        route: 'sccimembers',
+        icon: FiTrendingUp 
     },
     {
         name: 'Memberships',
-        route: 'standard'
+        route: 'memberships',
+        icon: FiCompass
     },
    
 ]

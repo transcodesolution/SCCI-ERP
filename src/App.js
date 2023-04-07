@@ -3,6 +3,9 @@ import './App.css';
 import Login from './Components/Login';
 import { useSelector } from 'react-redux';
 import MainRoute from './Components/Route/MainRoute';
+import MainComponent from './Components/Layout/MainComponent';
+// import Sidebar1 from './Components/Commom/Sidebar';
+
 function App() {
   const { token } = useSelector((state) => state.auth);
   console.log(token)
@@ -16,3 +19,5 @@ function App() {
 }
 
 export default App;
+
+
