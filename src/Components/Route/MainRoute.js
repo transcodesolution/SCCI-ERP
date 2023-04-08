@@ -1,21 +1,28 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { data } from "./Routedata";
 import Sidebar from "../Commom/Sidebar";
-
+import { authData } from "./Routedata";
+import { useSelector } from 'react-redux';
 function MainRoute() {
-
+    const { token } = useSelector((state) => state.auth);
+    console.log(token)
     return (
         <>
             <Sidebar />
             {
-
-                <Routes>
-
+                !token ? <>  <Routes>
                     {
-                        data?.map((route) => <Route path={`/${route.routeName}`} element={route.component} />)
+                        authData?.map((route) => <Route path={`/${route.routeName}`} element={route.component} />)
                     }
-                    <Route path='*' element={<Navigate to='/sccimembers' />} />
+                    <Route path='*' element={<Navigate to='/login' />} />
                 </Routes>
+                </> :
+                    <Routes>
+                        {
+                            data?.map((route) => <Route path={`/${route.routeName}`} element={route.component} />)
+                        }
+                        <Route path='*' element={<Navigate to='/sccimembers' />} />
+                    </Routes>
             }
         </>
 

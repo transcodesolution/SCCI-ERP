@@ -16,7 +16,7 @@ export const authSlice = createSlice({
         },
         setLogout: (state) => {
             state.token = null;
-            state.profile = null;
+            // state.profile = null;
         },
     },
 });

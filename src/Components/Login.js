@@ -35,6 +35,7 @@ const Login = () => {
     const handleLogin = (e) => {
         console.log(e)
         dispatch(setLogin({ token: '123' }))
+        navigate("/")
 
     };
 
