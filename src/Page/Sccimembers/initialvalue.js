@@ -1,0 +1,18 @@
+export const initialValues = {
+    firstName: "",
+    lastName: "",
+    contectNumber: "",
+    email: "",
+    whatsappNumber: "",
+    birthDate: "",
+    gender: "",
+    companyAddress: "",
+    state: "",
+    detailOfCompany: "",
+    memberships: "",
+    membershipsDetails: "",
+    gstNumber: "",
+    about: "",
+    website: "",
+    profilePhoto: "",
+}

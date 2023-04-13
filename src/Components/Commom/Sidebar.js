@@ -52,6 +52,7 @@ export default function SidebarWithHeader({ children }) {
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
       </Box>
+
     </Box>
   );
 }
@@ -79,11 +80,12 @@ export const SidebarContent = ({ onClose, ...rest }) => {
         return (
           <>
             <NavItem key={nav.route} icon={nav.icon}>
-              <NavLink to={`/${nav.route}`}>{nav.name} </NavLink>
+              <NavLink className={'sidebar_hover'} to={`/${nav.route}`}>{nav.name} </NavLink>
             </NavItem>
           </>
         );
       })}
+
     </Box>
   );
 };
@@ -186,10 +188,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Justina Clark</Text>
-                  <Text fontSize="xs" color="gray.600">
-                    Admin
-                  </Text>
+
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>
                   <FiChevronDown />
@@ -209,6 +208,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
           </Menu>
         </Flex>
       </HStack>
+
     </Flex>
   );
 };

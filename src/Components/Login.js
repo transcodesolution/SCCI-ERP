@@ -3,9 +3,17 @@ import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { useDispatch } from 'react-redux';
 import { MDBBtn, MDBCard, MDBCardBody, MDBCheckbox, MDBContainer, MDBInput } from 'mdb-react-ui-kit';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { setLogin } from '../Reducers/authReducer';
+import { ApiPostNoAuth } from '../Api/ApiData';
+import { toast } from "react-toastify";
+// import * as yup from 'yup'
+import { Button, Text } from '@chakra-ui/react'
 
+const schema = yup.object().shape({
+    email: yup.string().required("please enter your email"),
+    password: yup.string().required("please enter your password")
+})
 
 const Login = () => {
 
@@ -33,71 +41,39 @@ const Login = () => {
 
 
     const handleLogin = (e) => {
-        console.log(e)
-        dispatch(setLogin({ token: '123' }))
-        navigate("/")
+        console.log(e, "wwewe")
+        ApiPostNoAuth(
+            "/admin/login",
+            {
+                email: e.email,
+                password: e.password,
+            }
+        )
+            .then((response) => {
+                toast.success('Logiin SuccessFull')
+                dispatch(
+                    setLogin({
+                        token: response?.data?.data?.token,
+                        profile: response?.data?.data,
+                        access: response?.data?.data?.managerAccess,
+                    })
+                );
+                navigate("/StudentListpage");
+            })
+            .catch((error) => {
+                toast.error(error.message)
+                console.log(error);
+            });
+
+
 
     };
 
 
     return (
         <>
-            {/* <form className={classes.container} noValidate autoComplete="off">
-                <Box
-                    sx={{
-                        width: "120%",
-                        maxWidth: '100%',
-                        ml: 0,
-                        mb: "-7rem"
-                    }}>
-                    <Card style={{ marginTop: "15rem" }}>
-                        <CardHeader className={classes.header} title="Huia Capital" />
-                        <CardContent>
-                            <div>
-                                <TextField
-                                    error={initialState.isError}
-                                    fullWidth
-                                    id="email"
-                                    type="email"
-                                    label="Email"
-                                    placeholder="Email"
-                                    margin="normal"
-                                    // helperText={state.helperText}
-                                    {...register('email')}
-                                    onChange={handleEmailChange}
-                                />
-                                <div style={{ color: "red" }}>{errors.email?.message}</div>
-                                <TextField
-                                    error={initialState.isError}
-                                    fullWidth
-                                    type="password"
-                                    id="password"
-                                    label="Password"
-                                    placeholder="Password"
-                                    margin="normal"
-                                    // helperText={state.helperText}
-                                    {...register('password')}
-                                    onChange={handlePasswordChange}
-                                />
-                                <div style={{ color: "red" }}>{errors.password?.message}</div>
-                            </div>
-                        </CardContent>
-                        <CardActions>
-                            <Button
-                                variant="contained"
-                                size="large"
-                                color="secondary"
-                                className={classes.loginBtn}
-                                onClick={handleSubmit(handleLogin)}
-                                disabled={loginState.isButtonDisabled}
-                            >
-                                Login
-                            </Button>
-                        </CardActions>
-                    </Card>
-                </Box>
-            </form> */}
-            <Formik initialValues={registration} onSubmit={handleLogin}>
+
+            <Formik initialValues={registration} validationSchema={schema} onSubmit={handleLogin}>
                 {
                     ({ values, isSubmitting }) => {
                         return <Form>
@@ -114,28 +90,29 @@ const Login = () => {
                                         <h2 className="fw-bold mb-5">Log In</h2>
 
 
+                                        <ErrorMessage name='email' >
+                                            {(msg) => <Text as="span" color={'red'}>{msg}  </Text>}
+                                        </ErrorMessage>
                                         <Field name='email'>
                                             {({ field, meta }) => (
-                                                <MDBInput wrapperClass='mb-4' id='email' type='email' label="Email" {...field} invalid={meta.touched && meta.error} />
+                                                <MDBInput wrapperClass='mb-4' id='email' type='text' label="Email" {...field} invalid={meta.touched && meta.error} />
                                             )}
                                         </Field>
+                                        <ErrorMessage name='password' >
+                                            {(msg) => <Text as="span" color={'red'}> {msg} </Text>}
+                                        </ErrorMessage>
                                         <Field name='password'>
                                             {({ field, meta }) => (
                                                 <MDBInput wrapperClass='mb-4' name='password' id='password' type='password' label="Password" {...field} invalid={meta.touched && meta.error} />
                                             )}
                                         </Field>
-
-
-                                        <Field name="firstName">
-                                            {({ field, meta }) => (
-                                                <div>
-
-                                                    <MDBBtn className='w-100 mb-4' type='submit' size='md' disabled={isSubmitting}>Log  IN</MDBBtn>
-
-                                                </div>
-                                            )}
+                                        <br></br>
+                                        <br></br>
+                                        <Field>
+                                            {() => <Button type='submit' colorScheme='blue'>Button</Button>}
                                         </Field>
-                                      
+
+
 
                                         <div className="text-center">
 
@@ -150,7 +127,7 @@ const Login = () => {
                     }
                 }
 
-            </Formik >
+            </Formik>
         </>
     );
 }

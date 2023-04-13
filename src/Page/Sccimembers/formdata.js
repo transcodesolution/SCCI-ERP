@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import profile from "../../Assest/images/profile.png";
 import edit_icon from "../../Assest/images/edit_icon.png";
-import { SignupSchema } from "./SignupSchema";
-import { initialValues } from "./initialvalue";
 import {
   Progress,
   Box,
@@ -21,50 +19,25 @@ import {
   FormHelperText,
   InputRightElement,
   Select,
-  Text,
 } from "@chakra-ui/react";
-import { handleUploadImage } from "../../Uploads/upload";
-
+// import { useForm } from "react-hook-form";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import Error from "../../Components/Commom/Error";
 // import { initializeConnect } from "react-redux/es/components/connect";
-const Form1 = ({ values, setFieldValue }) => {
+const Form1 = () => {
   return (
     <>
-      <Heading w="100%" textAlign={"center"} fontWeight="400" mb="2%" >
-        Members's Details
+      <Heading w="100%" textAlign={"center"} fontWeight="normal" mb="2%">
+        User Personal details
       </Heading>
 
-      <div className="profile_img_block">
-        {!values.profilePhoto ? (
-          <img
-            className="profile_img"
-            src={'https://nakedsecurity.sophos.com/wp-content/uploads/sites/2/2013/08/facebook-silhouette_thumb.jpg'}
-            alt="profile"
-          />
-        ) : (
-          <img
-            className="profile_img"
-            src={values.profilePhoto}
-            alt="profile"
-          />
-        )}
-
-        <input
-          type={"file"}
-          id="upload"
-          onChange={(event) =>
-            handleUploadImage(
-              event,
-              setFieldValue,
-              "profilePhoto"
-            )
-          }
-          hidden
-        ></input>
-        <br></br>
-        <Button mb={4} color={"Highlight"}> <label htmlFor="upload"> Upload</label></Button>
+      <div className="profile_img">
+        <img src={profile} alt="" />
+        <label>
+          <span>
+            <img src={edit_icon} alt="icon" />
+          </span>
+        </label>
       </div>
 
       <Flex>
@@ -84,34 +57,13 @@ const Form1 = ({ values, setFieldValue }) => {
 
                 <ErrorMessage
                   name="firstName"
-                  render={(msg) => <Error msg={msg} />}
+                  render={(msg) => <div>{msg}</div>}
                 />
               </FormControl>
             )}
           </Field>
         </FormControl>
 
-        <FormControl mr="5%">
-          <Field name="middleName">
-            {({ field }) => (
-              <FormControl>
-                <FormLabel htmlFor="middleName" fontWeight={"normal"}>
-                  Middle Name
-                </FormLabel>
-                <Input
-                  type="text"
-                  id="middleName"
-                  placeholder="Middle Name"
-                  {...field}
-                />
-                <ErrorMessage
-                  name="middleName"
-                  render={(msg) => <Error msg={msg} />}
-                />
-              </FormControl>
-            )}
-          </Field>
-        </FormControl>
         <FormControl mr="5%">
           <Field name="lastName">
             {({ field }) => (
@@ -127,7 +79,7 @@ const Form1 = ({ values, setFieldValue }) => {
                 />
                 <ErrorMessage
                   name="lastName"
-                  render={(msg) => <Error msg={msg} />}
+                  render={(msg) => <div>{msg}</div>}
                 />
               </FormControl>
             )}
@@ -151,7 +103,7 @@ const Form1 = ({ values, setFieldValue }) => {
                 />
                 <ErrorMessage
                   name="contectNumber"
-                  render={(msg) => <Error msg={msg} />}
+                  render={(msg) => <div>{msg}</div>}
                 />
               </FormControl>
             )}
@@ -166,7 +118,7 @@ const Form1 = ({ values, setFieldValue }) => {
                   Email
                 </FormLabel>
                 <Input type="email" id="email" placeholder="Email" {...field} />
-                <ErrorMessage name="email" render={(msg) => <Error msg={msg} />} />
+                <ErrorMessage name="email" render={(msg) => <div>{msg}</div>} />
               </FormControl>
             )}
           </Field>
@@ -189,7 +141,7 @@ const Form1 = ({ values, setFieldValue }) => {
                 />
                 <ErrorMessage
                   name="birthDate"
-                  render={(msg) => <Error msg={msg} />}
+                  render={(msg) => <div>{msg}</div>}
                 />
               </FormControl>
             )}
@@ -211,7 +163,7 @@ const Form1 = ({ values, setFieldValue }) => {
                 />
                 <ErrorMessage
                   name="whatsappNumber"
-                  render={(msg) => <Error msg={msg} />}
+                  render={(msg) => <div>{msg}</div>}
                 />
               </FormControl>
             )}
@@ -219,15 +171,15 @@ const Form1 = ({ values, setFieldValue }) => {
         </FormControl>
       </Flex>
 
-      <FormControl mt={4} mr="5%" className="radio_btn">
+      <FormControl mr="5%" className="radio_btn">
         <Field name="gender">
           {({ field }) => (
-            <>
+            <FormControl>
               <FormLabel htmlFor="gender" fontWeight={"normal"}>
                 Gender
               </FormLabel>
               <div className="">
-                <Field
+                <input
                   type="radio"
                   id="male"
                   value="male"
@@ -236,7 +188,7 @@ const Form1 = ({ values, setFieldValue }) => {
                 />
                 <label htmlFor="male">Male</label>
 
-                <Field
+                <input
                   type="radio"
                   id="female"
                   value="female"
@@ -245,8 +197,8 @@ const Form1 = ({ values, setFieldValue }) => {
                 />
                 <label htmlFor="female">Female</label>
               </div>
-              <ErrorMessage name="gender" render={(msg) => <Error msg={msg} />} />
-            </>
+              <ErrorMessage name="gender" render={(msg) => <div>{msg}</div>} />
+            </FormControl>
           )}
         </Field>
       </FormControl>
@@ -276,7 +228,7 @@ const Form2 = () => {
               />
               <ErrorMessage
                 name="companyAddress"
-                render={(msg) => <Error msg={msg} />}
+                render={(msg) => <div>{msg}</div>}
               />
             </FormControl>
           )}
@@ -296,7 +248,7 @@ const Form2 = () => {
                 placeholder="Enter Your State / city"
                 {...field}
               />
-              <ErrorMessage name="state" render={(msg) => <Error msg={msg} />} />
+              <ErrorMessage name="state" render={(msg) => <div>{msg}</div>} />
             </FormControl>
           )}
         </Field>
@@ -321,7 +273,7 @@ const Form2 = () => {
                 />
                 <ErrorMessage
                   name="website"
-                  render={(msg) => <Error msg={msg} />}
+                  render={(msg) => <div>{msg}</div>}
                 />
               </FormControl>
             )}
@@ -347,7 +299,7 @@ const Form2 = () => {
                   }}
                 />
 
-                <ErrorMessage name="about" render={(msg) => <Error msg={msg} />} />
+                <ErrorMessage name="about" render={(msg) => <div>{msg}</div>} />
               </FormControl>
             )}
           </Field>
@@ -387,7 +339,7 @@ const Form3 = () => {
                 />
                 <ErrorMessage
                   name="gstNumber"
-                  render={(msg) => <Error msg={msg} />}
+                  render={(msg) => <div>{msg}</div>}
                 />
               </FormControl>
             )}
@@ -409,7 +361,7 @@ const Form3 = () => {
                 />
                 <ErrorMessage
                   name="detailOfCompany"
-                  render={(msg) => <Error msg={msg} />}
+                  render={(msg) => <div>{msg}</div>}
                 />
               </FormControl>
             )}
@@ -445,7 +397,7 @@ const Form3 = () => {
 
               <ErrorMessage
                 name="memberships"
-                render={(msg) => <Error msg={msg} />}
+                render={(msg) => <div>{msg}</div>}
               />
             </FormControl>
           )}
@@ -496,7 +448,7 @@ const Form3 = () => {
               />
               <ErrorMessage
                 name="membershipsDetails"
-                render={(msg) => <Error msg={msg} />}
+                render={(msg) => <div>{msg}</div>}
               />
             </FormControl>
           )}
@@ -510,6 +462,71 @@ export default function Multistep() {
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(33.33);
 
+  const SignupSchema = Yup.object().shape({
+    firstName: Yup.string()
+      .min(2, "Too Short!")
+      .max(50, "Too Long!")
+      .required("please  enter your firstName"),
+    lastName: Yup.string()
+      .min(2, "Too Short!")
+      .max(50, "Too Long!")
+      .required("please enter your lastName"),
+    email: Yup.string()
+      .email("Invalid email")
+      .required("please enter your email "),
+    contectNumber: Yup.string()
+      .matches(/^[6-9]\d{9}$/, {
+        message: "Please enter valid number.",
+        excludeEmptyString: false,
+      })
+      .required("please enter your contect number"),
+    whatsappNumber: Yup.string()
+      .matches(/^[6-9]\d{9}$/, {
+        message: "Please enter valid number.",
+        excludeEmptyString: false,
+      })
+      .required("please enter your whatsappNumber"),
+    gender: Yup.string().required("A radio option is required"),
+    birthDate: Yup.date().required("Date Of Birth Required"),
+    companyAddress: Yup.string().required("please enter your address"),
+    state: Yup.string().required("state require"),
+    detailOfCompany: Yup.string()
+      .min(2, "Too Short!")
+      .max(50, "Too Long!")
+      .required("please file the compoany detail"),
+    gstNumber: Yup.string()
+      .required("GST number is required")
+      .matches(
+        /^[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[0-9]{1}$/,
+        "Invalid GST number"
+      ),
+    memberships: Yup.string().required("please select your country"),
+    membershipsDetails: Yup.string()
+      .min(2, "Too Short!")
+      .max(50, "Too Long!")
+      .required("please enter your memberships Details"),
+    about: Yup.string().required("please enter your value"),
+    website: Yup.string().required("please enter your value"),
+  });
+
+  const initialValues = {
+    firstName: "",
+    lastName: "",
+    contectNumber: "",
+    email: "",
+    whatsappNumber: "",
+    birthDate: "",
+    gender: "",
+    companyAddress: "",
+    state: "",
+    detailOfCompany: "",
+    memberships: "",
+    membershipsDetails: "",
+    gstNumber: "",
+    about: "",
+    website: "",
+    // gstNumber: "ABCD1234E5F6",
+  };
 
   return (
     <>
@@ -517,13 +534,13 @@ export default function Multistep() {
         initialValues={initialValues}
         validationSchema={SignupSchema}
         onSubmit={(values) => {
-
+          // same shape as initial values
+          console.log(values);
         }}
       >
         {({ values, setFieldValue }) => (
           <Form>
-
-
+            {console.log(values)}
 
             <Box
               borderWidth="1px"
@@ -534,7 +551,7 @@ export default function Multistep() {
               m="10px auto"
               as="form"
             >
-              {step === 1 ? <Form1 setFieldValue={setFieldValue} values={values} /> : step === 2 ? <Form2 /> : <Form3 />}
+              {step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : <Form3 />}
               <ButtonGroup mt="5%" w="100%">
                 <Flex w="100%" justifyContent="space-between">
                   <Flex>
