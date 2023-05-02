@@ -13,6 +13,8 @@ import {
 import {
     RiVipCrown2Line
 } from 'react-icons/ri';
+import { TbCategory } from "react-icons/tb";
+
 export const data = [
     {
         name: 'Memberships',
@@ -24,6 +26,7 @@ export const data = [
         route: 'sccimembers',
         icon: BsPeople
     },
+
     {
         name: 'Dashboard',
         route: 'dashboard',
@@ -33,6 +36,11 @@ export const data = [
         name: 'Mail',
         route: 'mail',
         icon: AiOutlineMail,
+    },
+    {
+        name: 'Category',
+        route: 'category',
+        icon: TbCategory,
     },
     {
         name: 'Log Out',

@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+// import './App.css';
 import Login from './Components/Login';
 import { useSelector } from 'react-redux';
 import MainRoute from './Components/Route/MainRoute';
@@ -24,7 +24,7 @@ function App() {
         draggable
         pauseOnHover
       />
-      {token ? <Login /> : <> <MainRoute /></>}
+      {!token ? <Login /> : <> <MainRoute /></>}
 
     </div>
   );

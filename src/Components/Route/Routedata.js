@@ -1,9 +1,11 @@
+import Category from "../../Page/Category/Cateory";
 import Dashboard from "../../Page/Dashboard/Dashboard";
-import Memberships from "../../Page/Memberships/Memberships";
-import Sccimembers from "../../Page/Sccimembers/Sccimembers";
-import Multistep from "../../Page/Sccimembers/formdata";
+import TabsData from "../../Page/Memberships/TabsData";
 import Login from "../Login";
-
+import Sccimembers from "../../Page/Memberships/Sccimembers";
+import Memberships from "../../Page/Sccimembers/Sccimembers";
+import Mail from "../../Page/Mail/Mail";
+import PersonalDetails from "../../Page/Memberships/Components/PersonalDetails";
 export const data = [
   {
     routeName: "dashboard",
@@ -11,12 +13,30 @@ export const data = [
   },
   {
     routeName: "sccimembers",
-    component: <Memberships />,
+    component: <Sccimembers />,
+
+  },
+  {
+    routeName: "members_details/:id",
+    component: <TabsData />
+
   },
   {
     routeName: "memberships",
-    component: <Sccimembers />,
+    component: <Memberships />,
   },
+  {
+    routeName: "category",
+    component: <Category />,
+  },
+  {
+    routeName: "mail",
+    component: <Mail />,
+  },
+  {
+    routeName: "personal_details",
+    component: <PersonalDetails />
+  }
 
 ];
 

@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
-import { ApiUpload } from "../Api/ApiData"; 
+import { ApiUpload } from "../Api/ApiData";
 
-export const handleUploadImage = async (e, setFieldValue, fieldName) => {
+export const handleUploadImage = async (e, setterFun) => {
     let file = e.target.files[0];
     let allowedExtensions = /(\/jpg|\/jpeg|\/png|\/gif)$/i;
     let formData = new FormData();
@@ -9,12 +9,13 @@ export const handleUploadImage = async (e, setFieldValue, fieldName) => {
     if (allowedExtensions.exec(file?.type)) {
 
         try {
-            ApiUpload("/upload/profile", formData, {
+            ApiUpload("/upload/file", formData, {
                 Headers: {
                     "Content-Type": "multipart/form-data",
                 },
             }).then((response) => {
-                setFieldValue(fieldName, response?.data?.data?.image)
+                console.log(response)
+                setterFun(response?.data?.data?.image)
                 toast.success('Uploaded Successfully')
                 return;
             }).catch((error) => {

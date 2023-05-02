@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { useDispatch } from 'react-redux';
 import { MDBBtn, MDBCard, MDBCardBody, MDBCheckbox, MDBContainer, MDBInput } from 'mdb-react-ui-kit';
@@ -8,7 +8,8 @@ import { setLogin } from '../Reducers/authReducer';
 import { ApiPostNoAuth } from '../Api/ApiData';
 import { toast } from "react-toastify";
 // import * as yup from 'yup'
-import { Button, Text } from '@chakra-ui/react'
+import { Button, Checkbox, Flex, FormControl, FormLabel, Heading, Image, Input, Stack, Text } from '@chakra-ui/react'
+import Error from './Commom/Error';
 
 const schema = yup.object().shape({
     email: yup.string().required("please enter your email"),
@@ -29,7 +30,7 @@ const Login = () => {
     const loginSchema = yup.object().shape({
         email: yup
             .string()
-            .email("Please provide a valid email address")
+            // .email("Please provide a valid email address")
             .required("Email address is required"),
         password: yup
             .string()
@@ -80,54 +81,80 @@ const Login = () => {
                             {
                                 console.log(values)
                             }
-                            <MDBContainer fluid>
+                            <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
+                                <Flex p={8} flex={1} align={'center'} justify={'center'}>
+                                    <Stack spacing={4} w={'full'} maxW={'md'}>
+                                        <Heading fontSize={'2xl'}>Sign in to SCCI ERP</Heading>
+                                        <FormControl id="email">
+                                            <FormLabel>Email address</FormLabel>
+                                            <Field name="email">
+                                                {({ field }) => (
+                                                    <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
 
-                                <div className="p-5 bg-image" style={{ backgroundImage: 'url(https://mdbootstrap.com/img/new/textures/full/171.jpg)', height: '300px' }}></div>
+                                                        <Input
+                                                            type="text"
+                                                            id="email"
+                                                            placeholder="Email"
+                                                            {...field}
+                                                        />
+                                                        <ErrorMessage
+                                                            name="email"
+                                                            render={(msg) => <Error msg={msg} />}
+                                                        />
+                                                    </FormControl>
+                                                )}</Field>
 
-                                <MDBCard className='mx-5 mb-5 p-5 shadow-5' style={{ marginTop: '-100px', background: 'hsla(0, 0%, 100%, 0.8)', backdropFilter: 'blur(30px)' }}>
-                                    <MDBCardBody className='p-5 text-center'>
+                                        </FormControl>
+                                        <FormControl id="password">
+                                            <FormLabel>Password</FormLabel>
+                                            <Field name="password">
+                                                {({ field }) => (
+                                                    <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
 
-                                        <h2 className="fw-bold mb-5">Log In</h2>
+                                                        <Input
+                                                            type="password"
+                                                            id="password"
+                                                            placeholder="password"
+                                                            {...field}
+                                                        />
+                                                        <ErrorMessage
+                                                            name="password"
+                                                            render={(msg) => <Error msg={msg} />}
+                                                        />
+                                                    </FormControl>
+                                                )}</Field>
 
+                                        </FormControl>
+                                        <Stack spacing={6}>
+                                            <Stack
+                                                direction={{ base: 'column', sm: 'row' }}
+                                                align={'start'}
+                                                justify={'space-between'}>
+                                                <Checkbox>Remember me</Checkbox>
 
-                                        <ErrorMessage name='email' >
-                                            {(msg) => <Text as="span" color={'red'}>{msg}  </Text>}
-                                        </ErrorMessage>
-                                        <Field name='email'>
-                                            {({ field, meta }) => (
-                                                <MDBInput wrapperClass='mb-4' id='email' type='text' label="Email" {...field} invalid={meta.touched && meta.error} />
-                                            )}
-                                        </Field>
-                                        <ErrorMessage name='password' >
-                                            {(msg) => <Text as="span" color={'red'}> {msg} </Text>}
-                                        </ErrorMessage>
-                                        <Field name='password'>
-                                            {({ field, meta }) => (
-                                                <MDBInput wrapperClass='mb-4' name='password' id='password' type='password' label="Password" {...field} invalid={meta.touched && meta.error} />
-                                            )}
-                                        </Field>
-                                        <br></br>
-                                        <br></br>
-                                        <Field>
-                                            {() => <Button type='submit' colorScheme='blue'>Button</Button>}
-                                        </Field>
-
-
-
-                                        <div className="text-center">
-
-
-                                        </div>
-
-                                    </MDBCardBody>
-                                </MDBCard>
-
-                            </MDBContainer>
+                                            </Stack>
+                                            <Button type='submit' colorScheme={'blue'} variant={'solid'}>
+                                                Sign in
+                                            </Button>
+                                        </Stack>
+                                    </Stack>
+                                </Flex>
+                                <Flex flex={1}>
+                                    <Image
+                                        alt={'Login Image'}
+                                        objectFit={'cover'}
+                                        src={
+                                            'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80'
+                                        }
+                                    />
+                                </Flex>
+                            </Stack>
                         </Form>
                     }
                 }
 
             </Formik>
+
         </>
     );
 }

@@ -9,4 +9,4 @@ function Error({ msg }) {
     )
 }
 
-export default Error
+export default Error    

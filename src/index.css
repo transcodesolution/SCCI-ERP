@@ -35,15 +35,16 @@
   align-items: center;
   justify-content: flex-start;
 }
-label {
+/* label {
   margin-top: 2% !important;
   font-size: 18px !important;
-}
+} */
 .css-bg29cf {
   /* margin: 95px 15px 15px 255px !important; */
   max-width: 100% !important;
   background: #fff !important;
   min-height: 600px;
+  margin-top: 65px !important;
 }
 .profile_img {
   /* margin-top: -60px; */
@@ -64,13 +65,7 @@ label {
 .css-1d7b4sx {
   margin-right: 5% !important;
 }
-.css-1elf7ca {
-  position: fixed !important;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1 !important;
-}
+
 .radio_btn input {
   margin-right: 5px;
 }
@@ -103,4 +98,60 @@ label {
 }
 .profile_img_block{
   text-align: center;
+}
+.css-ik8d9n{
+  top: 0;
+  z-index: 2;
+  padding-top: 10px;
+}
+.css-10isthl{
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  margin-left: 0 !important; 
+  background-color: #fff !important;
+  z-index: 1;
+}
+.jodit-container {
+  width: 100% !important;
+}
+.hover_effect:hover{
+  box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px !important;
+}
+
+.pagination{
+  margin-bottom: 0;
+}
+.pagination li{
+  margin-right: 10px;
+}
+.pagination li a{
+  display: inline-block;
+  border: 1px solid #dddddd;
+  padding: 5px 15px;
+  color: #000;
+}
+.pagination li.active a, .pagination li:hover, .pagination li:hover a{
+  background: #3182ce;
+  color: #fff;
+  border-color: #000;
+}
+.css-jtz08e .css-0, .chakra-stack.css-btweb{
+  width: 100%;
+}
+.pagination_block{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.pagination_block{
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row !important;
+  -webkit-flex-direction: row;
+}
+.pagination_block select{
+  width: 100px;
 }

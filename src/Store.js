@@ -10,14 +10,17 @@ import {
     REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-
+import { addStandardSlice } from "./Reducers/addScci";
+import { tabSlice } from "./Reducers/addMembercard";
 
 const persistConfigAuth = { key: "adminAuth_SCCI", storage, version: 1 };
 const persistedReducerAuth = persistReducer(persistConfigAuth, authReducer);
 
 
 const combineReducer = combineReducers({
-    auth: persistedReducerAuth
+    auth: persistedReducerAuth,
+    addFormData: addStandardSlice.reducer,
+    tab: tabSlice.reducer,
 })
 
 const store = configureStore({
@@ -29,6 +32,7 @@ const store = configureStore({
             },
         }),
 })
+
 
 export default store;
 

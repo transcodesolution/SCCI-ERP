@@ -1,22 +1,38 @@
 import React from 'react'
 import { Card, CardBody, CardFooter, Image, Stack, Heading, Text, Button, Divider } from '@chakra-ui/react'
 import { ButtonGroup } from 'react-bootstrap'
-function Membercard() {
+import { useDispatch } from 'react-redux'
+import { setActiveTab } from '../../Reducers/addMembercard'
+import tabeData from '../../Page/Memberships/TabsData'
+import { useNavigate } from 'react-router-dom'
+function Membercard({ data }) {
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
+    const heandleClick = (id) => {
+
+        navigate(`/members_details/${id}`)
+
+
+    }
     return (
         <>
-            <Card maxW='sm'>
+            <Card maxW='sm' className='hover_effect' >
                 <CardBody>
                     <Image
-                        src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
+                        src={data?.profilePhoto || 'https://nakedsecurity.sophos.com/wp-content/uploads/sites/2/2013/08/facebook-silhouette_thumb.jpg'}
                         alt='Green double couch with wooden legs'
                         borderRadius='lg'
                     />
                     <Stack mt='6' spacing='3'>
-                        <Heading size='md'>Living room Sofa</Heading>
+                        <Heading size='md'>{data?.companyName}</Heading>
                         <Text>
-                            This sofa is perfect for modern tropical spaces, baroque inspired
-                            spaces, earthy toned spaces and for people who love a chic design with a
-                            sprinkle of vintage design.
+                            {data?.firstName}  {data?.middleName}  {data?.lastName}
+                        </Text>
+                        <Text>
+                            {data?.phone}
+                        </Text>
+                        <Text>
+                            {data?.email}
                         </Text>
 
                     </Stack>
@@ -24,8 +40,8 @@ function Membercard() {
 
                 <CardFooter>
                     <ButtonGroup spacing='2'>
-                        <Button variant='solid' colorScheme='blue'>
-                            Buy now
+                        <Button variant='solid' colorScheme='blue' onClick={() => heandleClick(data?._id)}>
+                            Details
                         </Button>
 
                     </ButtonGroup>
@@ -35,4 +51,10 @@ function Membercard() {
     )
 }
 
-export default Membercard
+export default Membercard;
+
+
+
+
+
+

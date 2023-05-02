@@ -34,6 +34,7 @@ export default function SidebarWithHeader({ children }) {
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
       />
+
       <Drawer
         autoFocus={false}
         isOpen={isOpen}
@@ -69,7 +70,7 @@ export const SidebarContent = ({ onClose, ...rest }) => {
       h="full"
       {...rest}
     >
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
+      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between" >
         <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
           Logo
         </Text>
@@ -98,6 +99,7 @@ const NavItem = ({ icon, children, ...rest }) => {
       _focus={{ boxShadow: "none" }}
     >
       <Flex
+
         align="center"
         p="4"
         mx="4"
@@ -134,6 +136,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
   };
   return (
     <Flex
+
       ml={{ base: 0, md: 60 }}
       px={{ base: 4, md: 4 }}
       height="20"
@@ -161,7 +164,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
         Logo
       </Text>
 
-      <HStack spacing={{ base: "0", md: "6" }}>
+      <HStack spacing={{ base: "0", md: "6" }} >
         <IconButton
           size="lg"
           variant="ghost"
