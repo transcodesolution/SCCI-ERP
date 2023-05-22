@@ -7,7 +7,6 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { Button, Divider, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react'
 import { toast } from 'react-toastify'
 import ReactPaginate from 'react-paginate';
-import { useDispatch } from "react-redux";
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { saveAs } from 'file-saver';
@@ -18,16 +17,27 @@ import {
   MenuList,
   MenuItem,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 const Sccimembers = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const dispatch = useDispatch();
   const finalRef = React.useRef(null)
-  const [perPage, setPerPage] = useState(5);
-  const [size, setSize] = useState(perPage);
-  const [current, setCurrent] = useState(1);
+  const [search, setSearch] = useState({
+    name: "",
+    category: "",
+    limit: "",
+  })
+  const [page, setPage] = useState(1)
+  const [limit, setLimit] = useState(10)
+  const [pageCount, setCountPage] = useState(1);
+  const [members, setMembers] = useState([])
+  const [categories, setCategories] = useState([])
 
+  const navigate = useNavigate()
 
+  function handlePageClick(event) {
+    setPage(event.selected + 1)
+  }
 
   const getFilterMammbet = () => {
     toast.success('Transaction Added')
@@ -38,29 +48,8 @@ const Sccimembers = () => {
       "typefilter": search.category,
     }).then((response) => {
       setMembers(response?.data?.data?.member_data)
-      // console.log("@@@@@@@@@@@@", response)
-      console.log("######", members)
-      console.log("&&&&&&&&&&&&&&&&&", response)
     })
   }
-
-  function handlePageClick(event) {
-    const selectedPage = event.selected;
-    console.log("page", event)
-    setPage(event.selected + 1)
-  }
-  const [search, setSearch] = useState({
-    name: "",
-    category: "",
-    limit: "",
-  })
-  const [page, setPage] = useState(1)
-  const [limit, setLimit] = useState(10)
-  const [pageCount, setCountPage] = useState(1);
-  const [typefilter, setTypeFilter] = useState("");
-  const [members, setMembers] = useState([])
-  const [categories, setCategories] = useState([])
-
   const handleChange = (event) => {
     let { name, value } = event.target
     setSearch((old) => {
@@ -80,18 +69,14 @@ const Sccimembers = () => {
       setPage(response?.data?.data?.state?.page)
       setLimit(response?.data?.data?.state?.limit)
       setCountPage(response?.data?.data?.state?.page_limit)
-      console.log("@@@@@@@@@@@@!!!!!!!!", response)
-      console.log("@!@!@!@!@!@!", members)
     })
   }
   const getAllCategory = async () => {
     await ApiPost('/admin/member/type/get/all', { search: "" }).then((response) => {
       setCategories(response?.data?.data)
-      console.log("***********&&&&&", categories)
     })
   }
   useEffect(() => {
-    getAllMembers()
     getAllCategory()
   }, [])
 
@@ -148,6 +133,16 @@ const Sccimembers = () => {
             <Input bg={'whiteAlpha.600'} type="text" placeholder="Search" name='name' onChange={handleChange} />
           </label>
           <div style={{ display: 'flex' }}>
+            <div style={{ marginRight: '15px' }}>
+              <Box textAlign={'center'}>
+                <Button onClick={() => navigate('/mail', {
+                  state: {
+                    category: [],
+                    individual: members.map((data) => data._id)
+                  }
+                })} >  Mail  </Button>
+              </Box>
+            </div>
             <Menu>
               <MenuButton as={Button}   >
                 Export
@@ -192,7 +187,6 @@ const Sccimembers = () => {
                     id="kt_datatable_search_status"
                     onChange={(e) => {
                       setLimit(parseInt(e.target.value));
-                      console.log(e.target.value);
                     }}
                     value={limit}
                   >
