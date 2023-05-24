@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const BASE_URL = "http://192.168.29.178:2500/membership";
-const BASE_URL = "http://localhost:2500/membership";
+const BASE_URL = "http://192.168.29.178:2500/membership";
+// const BASE_URL = "http://localhost:2500/membership";
 
 const defaultHeaders = {
   isAuth: true,
@@ -34,9 +34,7 @@ export const ApiPostNoAuth = (type, userData) => {
   });
 };
 
-
 export const ApiGet = (type) => {
-
   return new Promise((resolve, reject) => {
     axios
       .get(BASE_URL + type, getHttpOptions())
@@ -60,7 +58,6 @@ export const ApiGet = (type) => {
       });
   });
 };
-
 
 export const ApiUpload = (type, userData, AdditionalHeader) => {
   return new Promise((resolve, reject) => {
@@ -92,7 +89,6 @@ export const ApiUpload = (type, userData, AdditionalHeader) => {
   });
 };
 
-
 export const ApiDelete = (type) => {
   return new Promise((resolve, reject) => {
     axios
@@ -117,8 +113,6 @@ export const ApiDelete = (type) => {
       });
   });
 };
-
-
 
 export const ApiPost = (type, userData) => {
   return new Promise((resolve, reject) => {

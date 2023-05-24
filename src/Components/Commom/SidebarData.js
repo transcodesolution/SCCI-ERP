@@ -21,6 +21,7 @@ export const data = [
         route: 'memberships',
         icon: RiVipCrown2Line
     },
+
     {
         name: 'Sccimembers',
         route: 'sccimembers',
