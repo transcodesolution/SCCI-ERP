@@ -65,12 +65,7 @@ const Login = () => {
                 toast.error(error.message)
                 console.log(error);
             });
-
-
-
     };
-
-
     return (
         <>
 

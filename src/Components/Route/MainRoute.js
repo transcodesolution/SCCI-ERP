@@ -7,18 +7,14 @@ function MainRoute() {
     return (
         <>
             <Sidebar>
-
-
                 <Routes>
                     {
                         data?.map((route) => <Route path={`/${route.routeName}`} element={route.component} />)
                     }
                     <Route path='*' element={<Navigate to='/sccimembers' />} />
                 </Routes>
-
             </Sidebar>
         </>
-
     );
 }
 

@@ -1,16 +1,9 @@
-import { Box, Flex, Input, Select, Stack } from '@chakra-ui/react';
-import Membercard from '../../Components/Commom/Card';
-import { SimpleGrid } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react';
-import { ApiPost } from '../../Api/ApiData';
-import { AiOutlinePlus } from 'react-icons/ai';
-import { Button, Divider, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react'
-import { toast } from 'react-toastify'
-import ReactPaginate from 'react-paginate';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
-import { saveAs } from 'file-saver';
-import * as XLSX from 'xlsx';
+import { Box, Flex, Input, Select, Stack } from "@chakra-ui/react";
+import Membercard from "../../Components/Commom/Card";
+import { SimpleGrid } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { ApiPost } from "../../Api/ApiData";
+import { AiOutlinePlus } from "react-icons/ai";
 import {
   Menu,
   MenuButton,
@@ -24,17 +17,16 @@ let timeout;
 const Sccimembers = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [search, setSearch] = useState("")
-  const [page, setPage] = useState(1)
-  const [limit, setLimit] = useState(10)
-  const [pageCount, setCountPage] = useState(1);
-  const [members, setMembers] = useState([])
-  const [categories, setCategories] = useState([])
   const [filter, setFilter] = useState({})
-
-  const navigate = useNavigate()
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [pageCount, setCountPage] = useState(1);
+  const [members, setMembers] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
 
   function handlePageClick(event) {
-    setPage(event.selected + 1)
+    setPage(event.selected + 1);
   }
 
   const getFilterMember = (body) => {
@@ -58,20 +50,23 @@ const Sccimembers = () => {
       limit,
       search
     }).then((response) => {
-      setMembers(response?.data?.data?.member_data)
-      setPage(response?.data?.data?.state?.page)
-      setLimit(response?.data?.data?.state?.limit)
-      setCountPage(response?.data?.data?.state?.page_limit)
-    })
-  }
+      setMembers(response?.data?.data?.member_data);
+      setPage(response?.data?.data?.state?.page);
+      setLimit(response?.data?.data?.state?.limit);
+      setCountPage(response?.data?.data?.state?.page_limit);
+      console.log("first", response?.data?.data?.member_data);
+    });
+  };
   const getAllCategory = async () => {
-    await ApiPost('/admin/member/type/get/all', { search: "" }).then((response) => {
-      setCategories(response?.data?.data)
-    })
-  }
+    await ApiPost("/admin/member/type/get/all", { search: "" }).then(
+      (response) => {
+        setCategories(response?.data?.data);
+      }
+    );
+  };
   useEffect(() => {
-    getAllCategory()
-  }, [])
+    getAllCategory();
+  }, []);
 
   useEffect(() => {
     getAllMembers()
@@ -88,19 +83,24 @@ const Sccimembers = () => {
 
 
   const handleDownload = () => {
-    const unit = 'pt';
-    const size = 'A4';
-    const orientation = 'portrait';
+    const unit = "pt";
+    const size = "A4";
+    const orientation = "portrait";
 
     const marginLeft = 0;
     const doc = new jsPDF(orientation, unit, size);
 
     doc.setFontSize(15);
-    doc.setFont('helvetica', 'bold');
-    doc.text('API Data', marginLeft, 40);
+    doc.setFont("helvetica", "bold");
 
-    const headers = [['FirstName', 'MiddleName', 'LastName', 'Phone', 'Email']];
-    const data = members.map(post => [post.firstName, post.middleName, post.lastName, post.phone, post.email]);
+    const headers = [["FirstName", "MiddleName", "LastName", "Phone", "Email"]];
+    const data = members.map((post) => [
+      post.firstName,
+      post.middleName,
+      post.lastName,
+      post.phone,
+      post.email,
+    ]);
     doc.autoTable({
       head: headers,
       body: data,
@@ -108,22 +108,31 @@ const Sccimembers = () => {
       styles: {
         fontSize: 12,
         cellPadding: 6,
-        overflow: 'linebreak',
-        tableWidth: 'auto',
+        overflow: "linebreak",
+        tableWidth: "auto",
       },
       margin: { top: 50 },
     });
-    doc.save('api-data.pdf');
+    doc.save("api-data.pdf");
   };
 
   const handleXLSX = () => {
-    const headers = [['FirstName', 'MiddleName', 'LastName', 'Phone', 'Email']];
-    const data = members.map(post => [post.firstName, post.middleName, post.lastName, post.phone, post.email]);
+    const headers = [["FirstName", "MiddleName", "LastName", "Phone", "Email"]];
+    const data = members.map((post) => [
+      post.firstName,
+      post.middleName,
+      post.lastName,
+      post.phone,
+      post.email,
+    ]);
     const worksheet = XLSX.utils.aoa_to_sheet([...headers, ...data]);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'API Data');
-    const xlsxBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    saveAs(new Blob([xlsxBuffer]), 'api-data.xlsx');
+    XLSX.utils.book_append_sheet(workbook, worksheet);
+    const xlsxBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    saveAs(new Blob([xlsxBuffer]), "api-data.xlsx");
   };
 
   return (
@@ -133,51 +142,63 @@ const Sccimembers = () => {
           <label style={{ width: "50%", display: 'block' }}>
             <Input bg={'whiteAlpha.600'} type="text" placeholder="Search" name='name' onChange={(event) => setSearch(event.target.value)} />
           </label>
-          <div style={{ display: 'flex' }}>
-            <div style={{ marginRight: '15px' }}>
-              <Box textAlign={'center'}>
-                <Button onClick={() => navigate('/mail', {
-                  state: {
-                    category: [],
-                    individual: members.map((data) => data._id)
+          <div style={{ display: "flex" }}>
+            <div style={{ marginRight: "15px" }}>
+              <Box textAlign={"center"}>
+                <Button
+                  onClick={() =>
+                    navigate("/mail", {
+                      state: {
+                        category: [],
+                        individual: members.map((data) => data._id),
+                      },
+                    })
                   }
-                })} >  Mail  </Button>
+                >
+                  {" "}
+                  Mail{" "}
+                </Button>
               </Box>
             </div>
             <Menu>
-              <MenuButton as={Button}   >
-                Export
-              </MenuButton>
+              <MenuButton as={Button}>Export</MenuButton>
               <MenuList>
-                <MenuItem><button onClick={handleDownload}>PDF</button></MenuItem>
-                <MenuItem><button onClick={handleXLSX}> XLSX</button></MenuItem>
+                <MenuItem>
+                  <button onClick={handleDownload}>PDF</button>
+                </MenuItem>
+                <MenuItem>
+                  <button onClick={handleXLSX}> XLSX</button>
+                </MenuItem>
               </MenuList>
             </Menu>
-            <div style={{ marginLeft: '15px' }}>
-              <Box textAlign={'center'}>
-                <Button onClick={onOpen} > <AiOutlinePlus /> &nbsp; Filter Details  </Button>
+            <div style={{ marginLeft: "15px" }}>
+              <Box textAlign={"center"}>
+                <Button onClick={onOpen}>
+                  {" "}
+                  <AiOutlinePlus /> &nbsp; Filter Details{" "}
+                </Button>
               </Box>
             </div>
           </div>
         </div>
-        <Box style={{ marginTop: '20px' }}>
+        <Box style={{ marginTop: "20px" }}>
           <SimpleGrid columns={[1, 2, 2, 2, 3, 5, 5]} spacing={5}>
-            {
-              members.map((data) => <Membercard {...members} data={data} />)
-            }
+            {members.map((data) => (
+              <Membercard {...members} data={data} />
+            ))}
           </SimpleGrid>
         </Box>
         <Flex mt={4} justifyContent={"space-between"}>
           <Box>
-            <Stack spacing={2} className='pagination_block'>
+            <Stack spacing={2} className="pagination_block">
               <div className="table-filter-info">
                 <ReactPaginate
                   pageCount={pageCount}
                   pageRangeDisplayed={2}
                   marginPagesDisplayed={1}
                   onPageChange={handlePageClick}
-                  containerClassName={'pagination'}
-                  activeClassName={'active'}
+                  containerClassName={"pagination"}
+                  activeClassName={"active"}
                 />
               </div>
 
@@ -206,56 +227,6 @@ const Sccimembers = () => {
       <Filtermodel isOpen={isOpen} categories={categories} onClose={onClose} getFilterMember={getFilterMember} />
 
     </>
-  )
-}
+  );
+};
 export default Sccimembers;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

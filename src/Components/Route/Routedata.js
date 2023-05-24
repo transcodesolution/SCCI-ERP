@@ -25,6 +25,7 @@ export const data = [
     routeName: "memberships",
     component: <Memberships />,
   },
+
   {
     routeName: "category",
     component: <Category />,

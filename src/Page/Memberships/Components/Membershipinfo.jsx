@@ -1,7 +1,7 @@
-import { Box } from '@chakra-ui/react'
-import React from 'react'
-import { Reusable } from './Personalinfo'
-import Countdown from 'react-countdown';
+import { Box } from "@chakra-ui/react";
+import React from "react";
+import { Reusable } from "./Personalinfo";
+import Countdown from "react-countdown";
 
 function Membershipinfo() {
     return (
@@ -37,4 +37,4 @@ function Membershipinfo() {
         </>)
 }
 
-export default Membershipinfo
+export default Membershipinfo;

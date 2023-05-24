@@ -5,7 +5,7 @@ import { SignupSchema } from "./SignupSchema";
 import { initialValues } from "./initialvalue";
 import { useDispatch } from "react-redux";
 import { addUser } from "../../Reducers/authReducer";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 // import { addStandard } from "./adddData";
 import { addFormData } from "../../Reducers/addScci";
 import { ApiPost } from "../../Api/ApiData";
@@ -46,7 +46,7 @@ import { toast } from "react-toastify";
 const Form1 = ({ values, setFieldValue }) => {
   return (
     <>
-      <Heading w="100%" textAlign={"center"} fontWeight="400" mb="2%" >
+      <Heading w="100%" textAlign={"center"} fontWeight="400" mb="2%">
         Members's Details
       </Heading>
 
@@ -54,7 +54,9 @@ const Form1 = ({ values, setFieldValue }) => {
         {!values.profilePhoto ? (
           <img
             className="profile_img"
-            src={'https://nakedsecurity.sophos.com/wp-content/uploads/sites/2/2013/08/facebook-silhouette_thumb.jpg'}
+            src={
+              "https://nakedsecurity.sophos.com/wp-content/uploads/sites/2/2013/08/facebook-silhouette_thumb.jpg"
+            }
             alt="profile"
           />
         ) : (
@@ -69,16 +71,17 @@ const Form1 = ({ values, setFieldValue }) => {
           type={"file"}
           id="upload"
           onChange={(event) =>
-            handleUploadImage(
-              event,
-              (value) => setFieldValue("profilePhoto", value),
-
+            handleUploadImage(event, (value) =>
+              setFieldValue("profilePhoto", value)
             )
           }
           hidden
         ></input>
         <br></br>
-        <Button mb={4} color={"Highlight"}> <label htmlFor="upload"> Upload</label></Button>
+        <Button mb={4} color={"Highlight"}>
+          {" "}
+          <label htmlFor="upload"> Upload</label>
+        </Button>
       </div>
 
       <Flex>
@@ -180,7 +183,10 @@ const Form1 = ({ values, setFieldValue }) => {
                   Email
                 </FormLabel>
                 <Input type="email" id="email" placeholder="Email" {...field} />
-                <ErrorMessage name="email" render={(msg) => <Error msg={msg} />} />
+                <ErrorMessage
+                  name="email"
+                  render={(msg) => <Error msg={msg} />}
+                />
               </FormControl>
             )}
           </Field>
@@ -246,21 +252,17 @@ const Form1 = ({ values, setFieldValue }) => {
                   id="male"
                   value="male"
                   name="gender"
-                // checked={formData.gender === 'male'}
+                  // checked={formData.gender === 'male'}
                 />
                 <label htmlFor="male">Male</label>
 
-                <Field
-                  type="radio"
-                  id="female"
-                  value="female"
-                  name="gender"
-
-                />
+                <Field type="radio" id="female" value="female" name="gender" />
                 <label htmlFor="female">Female</label>
-
               </div>
-              <ErrorMessage name="gender" render={(msg) => <Error msg={msg} />} />
+              <ErrorMessage
+                name="gender"
+                render={(msg) => <Error msg={msg} />}
+              />
             </>
           )}
         </Field>
@@ -270,11 +272,10 @@ const Form1 = ({ values, setFieldValue }) => {
 };
 
 const Form2 = ({ values, setFieldValue }) => {
-
   return (
     <>
       <Heading w="100%" textAlign={"center"} fontWeight="normal" mb="2%">
-        Member's  Company Details
+        Member's Company Details
       </Heading>
       <Flex>
         <FormControl mr="5%">
@@ -298,7 +299,7 @@ const Form2 = ({ values, setFieldValue }) => {
             )}
           </Field>
         </FormControl>
-        <FormControl >
+        <FormControl>
           <Field name="gst">
             {({ field }) => (
               <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
@@ -319,18 +320,15 @@ const Form2 = ({ values, setFieldValue }) => {
             )}
           </Field>
         </FormControl>
-
-
       </Flex>
       <FormControl as={GridItem} colSpan={[6, 6, null, 2]}>
-
         <Field name="address">
           {({ field }) => (
             <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
               <FormLabel htmlFor="address" fontWeight={"normal"}>
                 Company Address
               </FormLabel>
-              <Textarea id="address" placeholder='Company Address' {...field} />
+              <Textarea id="address" placeholder="Company Address" {...field} />
               <ErrorMessage
                 name="address"
                 render={(msg) => <Error msg={msg} />}
@@ -348,12 +346,7 @@ const Form2 = ({ values, setFieldValue }) => {
                 <FormLabel htmlFor="city" fontWeight={"normal"}>
                   City
                 </FormLabel>
-                <Input
-                  type="text"
-                  id="city"
-                  placeholder="City"
-                  {...field}
-                />
+                <Input type="text" id="city" placeholder="City" {...field} />
                 <ErrorMessage
                   name="city"
                   render={(msg) => <Error msg={msg} />}
@@ -362,19 +355,14 @@ const Form2 = ({ values, setFieldValue }) => {
             )}
           </Field>
         </FormControl>
-        <FormControl >
+        <FormControl>
           <Field name="state">
             {({ field }) => (
               <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
                 <FormLabel htmlFor="state" fontWeight={"normal"}>
                   State
                 </FormLabel>
-                <Input
-                  type="text"
-                  id="state"
-                  placeholder="State"
-                  {...field}
-                />
+                <Input type="text" id="state" placeholder="State" {...field} />
                 <ErrorMessage
                   name="state"
                   render={(msg) => <Error msg={msg} />}
@@ -383,11 +371,7 @@ const Form2 = ({ values, setFieldValue }) => {
             )}
           </Field>
         </FormControl>
-
-
-
       </Flex>
-
 
       <Flex mt={4}>
         <FormControl mr="5%">
@@ -411,11 +395,14 @@ const Form2 = ({ values, setFieldValue }) => {
             )}
           </Field>
         </FormControl>
-        <FormControl >
+        <FormControl>
           <Field name="companyWhatsappNumber">
             {({ field }) => (
               <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
-                <FormLabel htmlFor="companyWhatsappNumber" fontWeight={"normal"}>
+                <FormLabel
+                  htmlFor="companyWhatsappNumber"
+                  fontWeight={"normal"}
+                >
                   WhatsApp Number
                 </FormLabel>
                 <Input
@@ -432,10 +419,7 @@ const Form2 = ({ values, setFieldValue }) => {
             )}
           </Field>
         </FormControl>
-
-
       </Flex>
-
 
       <FormControl as={GridItem} colSpan={[3, 2]}>
         <Field name="website">
@@ -462,7 +446,6 @@ const Form2 = ({ values, setFieldValue }) => {
         </Field>
       </FormControl>
 
-
       <FormControl mt={1}>
         <Field name="businessDetails">
           {({ field }) => (
@@ -483,12 +466,14 @@ const Form2 = ({ values, setFieldValue }) => {
                 }}
               />
 
-              <ErrorMessage name="businessDetails" render={(msg) => <Error msg={msg} />} />
+              <ErrorMessage
+                name="businessDetails"
+                render={(msg) => <Error msg={msg} />}
+              />
             </FormControl>
           )}
         </Field>
       </FormControl>
-
 
       <FormControl mt={1}>
         <Field name="about">
@@ -510,43 +495,82 @@ const Form2 = ({ values, setFieldValue }) => {
                 }}
               />
 
-              <ErrorMessage name="about" render={(msg) => <Error msg={msg} />} />
+              <ErrorMessage
+                name="about"
+                render={(msg) => <Error msg={msg} />}
+              />
             </FormControl>
           )}
         </Field>
       </FormControl>
 
       <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
-        <FormLabel fontWeight={"normal"}>
-          Add Company's Photo
-        </FormLabel>
+        <FormLabel fontWeight={"normal"}>Add Company's Photo</FormLabel>
 
         <SimpleGrid columns={5} spacing={1} mt={8}>
-          {
-            values?.companyPhoto?.map((singlePhoto) => <Image boxSize='300px'
-              objectFit='cover'
-              src={singlePhoto} alt='Dan Abramov' />)
-          }
+          {values?.companyPhoto?.map((singlePhoto) => (
+            <Image
+              boxSize="300px"
+              objectFit="cover"
+              src={singlePhoto}
+              alt="Dan Abramov"
+            />
+          ))}
 
-
-          <Box minH={100} minW={100} bg='whitesmoke' margin={'auto'} border={'1px dashed #ddd'} borderRadius={'50%'} display={'flex'} justifyContent={'center'} alignItems={'center'} >  <label htmlFor="companyPhoto"> <AiOutlinePlus size={'40'} /></label></Box>
+          <Box
+            minH={100}
+            minW={100}
+            bg="whitesmoke"
+            margin={"auto"}
+            border={"1px dashed #ddd"}
+            borderRadius={"50%"}
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            {" "}
+            <label htmlFor="companyPhoto">
+              {" "}
+              <AiOutlinePlus size={"40"} />
+            </label>
+          </Box>
         </SimpleGrid>
-      </FormControl >
-      <input type="file" hidden id="companyPhoto" onChange={(event) => handleUploadImage(event, (data) => setFieldValue('companyPhoto', [...values?.companyPhoto, data]))}></input>
-
-
-
+      </FormControl>
+      <input
+        type="file"
+        hidden
+        id="companyPhoto"
+        onChange={(event) =>
+          handleUploadImage(event, (data) =>
+            setFieldValue("companyPhoto", [...values?.companyPhoto, data])
+          )
+        }
+      ></input>
     </>
   );
 };
 
-const Form3 = ({ values, setFieldValue, categories }) => {
+const Form3 = ({ values, setFieldValue, categories, handleAmountChange }) => {
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
+  const [amount, setAmount] = useState("");
+  const [paytmParams, setPaytmParams] = useState(null);
+  const handleStartDateChange = (event) => {
+    const { value } = event.target;
+    setStartDate(value);
 
+    const newEndDate = new Date(
+      new Date(value).getFullYear() + 1,
+      new Date(value).getMonth(),
+      new Date(value).getDate()
+    );
+    setEndDate(newEndDate.toISOString().substr(0, 10));
+  };
 
-
-
-
+  // const handleAmountChange = (event) => {
+  //   setAmount(event.target.value);
+  // };
 
   return (
     <>
@@ -558,10 +582,10 @@ const Form3 = ({ values, setFieldValue, categories }) => {
           {({ field }) => (
             <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
               <FormLabel htmlFor="membershipType" fontWeight={"normal"}>
-                Select  Membership Type
+                Select Membership Type
               </FormLabel>
-              <Field as={Select} {...field} id="membershipType"   >
-                <option value="yearly" >Yearly</option>
+              <Field as={Select} {...field} id="membershipType">
+                <option value="yearly">Yearly</option>
                 <option value="petron">Petron</option>
               </Field>
 
@@ -574,7 +598,7 @@ const Form3 = ({ values, setFieldValue, categories }) => {
         </Field>
       </FormControl>
 
-      <FormControl >
+      <FormControl>
         <Field name="category">
           {({ field }) => (
             <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
@@ -584,15 +608,15 @@ const Form3 = ({ values, setFieldValue, categories }) => {
               <Select
                 name="category"
                 className="form-control"
-                onChange={(event) => setFieldValue('category', event.target.value)}
+                onChange={(event) =>
+                  setFieldValue("category", event.target.value)
+                }
               >
                 <option value="">Select Category</option>
-
                 {categories?.map((item) => {
-                  return (
-                    <option value={item._id}>{item.name}</option>
-                  );
-                })}  </Select>
+                  return <option value={item._id}>{item.name}</option>;
+                })}{" "}
+              </Select>
 
               <ErrorMessage
                 name="category"
@@ -603,52 +627,58 @@ const Form3 = ({ values, setFieldValue, categories }) => {
         </Field>
       </FormControl>
 
+      {values?.membershipType == "yearly" && (
+        <Flex>
+          <FormControl mr="5%">
+            <Field name="startDate">
+              {({ field }) => (
+                <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+                  <FormLabel htmlFor="startDate" fontWeight={"normal"}>
+                    Start Date
+                  </FormLabel>
+                  <Input
+                    type="date"
+                    id="startDate"
+                    value={startDate}
+                    onChange={handleStartDateChange}
+                    // {...field}
+                  />
 
-      {values?.membershipType == 'yearly' && <Flex>
-        <FormControl mr="5%">
-          <Field name="startDate">
-            {({ field }) => (
-              <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
-                <FormLabel htmlFor="startDate" fontWeight={"normal"}>
-                  Start Date
-                </FormLabel>
-                <Input
-                  type="date"
-                  id="startDate"
-                  {...field}
-                />
-                <ErrorMessage
-                  name="startDate"
-                  render={(msg) => <Error msg={msg} />}
-                />
-              </FormControl>
-            )}
-          </Field>
-        </FormControl>
-        <FormControl >
-          <Field name="endDate">
-            {({ field }) => (
-              <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
-                <FormLabel htmlFor="endDate" fontWeight={"normal"}>
-                  End Date
-                </FormLabel>
-                <Input
-                  type="date"
-                  id="endDate"
-                  name="endDate"
-                  {...field}
-                />
-                <ErrorMessage
-                  name="endDate"
-                  render={(msg) => <Error msg={msg} />}
-                />
-              </FormControl>
-            )}
-          </Field>
-        </FormControl>
+                  <ErrorMessage
+                    name="startDate"
+                    render={(msg) => <Error msg={msg} />}
+                  />
+                </FormControl>
+              )}
+            </Field>
+          </FormControl>
+          <FormControl>
+            <Field name="endDate">
+              {({ field }) => (
+                <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+                  <FormLabel htmlFor="endDate" fontWeight={"normal"}>
+                    End Date
+                  </FormLabel>
+                  <Input
+                    type="date"
+                    id="endDate"
+                    name="endDate"
+                    value={endDate}
+                    disabled
+                    // max='2000-01-01'
+                    // {...field}
+                  />
 
-
-      </Flex>}
+                  <ErrorMessage
+                    name="endDate"
+                    render={(msg) => <Error msg={msg} />}
+                  />
+                </FormControl>
+              )}
+            </Field>
+          </FormControl>
+        </Flex>
+      )}
       <Flex>
         <FormControl mr="5%">
           <Field name="amount">
@@ -661,11 +691,13 @@ const Form3 = ({ values, setFieldValue, categories }) => {
                   type="number"
                   id="amount"
                   placeholder="Amount"
-                  {...field}
+                  value={amount}
+                  // {...field}
                   onChange={(event) => {
-                    setFieldValue('pendingAmount', event?.target?.value)
-                    setFieldValue('amount', event?.target?.value)
-
+                    // handleAmountChange(event)
+                    setAmount(event?.target?.value);
+                    setFieldValue("pendingAmount", event?.target?.value);
+                    setFieldValue("amount", event?.target?.value);
                   }}
                 />
                 <ErrorMessage
@@ -676,7 +708,7 @@ const Form3 = ({ values, setFieldValue, categories }) => {
             )}
           </Field>
         </FormControl>
-        <FormControl >
+        <FormControl>
           <Field name="pendingAmount">
             {({ field }) => (
               <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
@@ -697,59 +729,53 @@ const Form3 = ({ values, setFieldValue, categories }) => {
             )}
           </Field>
         </FormControl>
-
-
       </Flex>
-
 
       <FormControl as={GridItem} colSpan={[6, 3]}>
         <Field as="Checkbox" name="isSubscribeToBulletin">
           {({ field }) => (
             <>
-
-
-              <Checkbox {...field} colorScheme='green' >
+              <Checkbox {...field} colorScheme="green">
                 isSubscribeToBulletin
               </Checkbox>
-
 
               <ErrorMessage
                 name="isSubscribeToBulletin"
                 render={(msg) => <Error msg={msg} />}
               />
             </>
-
           )}
         </Field>
       </FormControl>
-
-
     </>
   );
 };
 
-export default function Memberships() {
+export default function Memberships({ data }) {
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(33.33);
-  const [categories, setCategories] = useState([])
-
+  const [categories, setCategories] = useState([]);
 
   const handleSubmit = (values, resetForm) => {
-    ApiPost('/admin/member/add', values).then((response) => {
-      toast.success('Member Added Successfully')
-      resetForm({
-        values: initialValues
+    ApiPost("/admin/member/add", values)
+      .then((response) => {
+        console.log("***********", response);
+
+        toast.success("Member Added Successfully");
+        resetForm({
+          values: initialValues,
+        });
       })
-
-    }).catch((error) => toast.error(error.message))
-
+      .catch((error) => toast.error(error.message));
   };
 
   const fetchCategory = async () => {
-    await ApiPost('/admin/member/type/get/all', { search: "" }).then((response) => {
-      console.log("category res", response?.data)
-      setCategories(response?.data?.data)
-    })
+    await ApiPost("/admin/member/type/get/all", { search: "" }).then(
+      (response) => {
+        console.log("category res", response?.data);
+        setCategories(response?.data?.data);
+      }
+    );
   };
 
   useEffect(() => {
@@ -761,13 +787,11 @@ export default function Memberships() {
         initialValues={initialValues}
         enableReinitialize
         // validationSchema={SignupSchema}
-        onSubmit={(values, { resetForm }) =>
-          handleSubmit(values, resetForm)
-        }
+        onSubmit={(values, { resetForm }) => handleSubmit(values, resetForm)}
       >
         {({ values, setFieldValue }) => (
-          <Form  >
-            {console.log(values)}
+          <Form>
+            {console.log("?>?>?>??>?", values)}
             <Box
               borderWidth="1px"
               rounded="lg"
@@ -775,9 +799,18 @@ export default function Memberships() {
               maxWidth={800}
               p={6}
               m="10px auto"
-
             >
-              {step === 1 ? <Form1 setFieldValue={setFieldValue} values={values} /> : step === 2 ? <Form2 setFieldValue={setFieldValue} values={values} /> : <Form3 setFieldValue={setFieldValue} values={values} categories={categories} />}
+              {step === 1 ? (
+                <Form1 setFieldValue={setFieldValue} values={values} />
+              ) : step === 2 ? (
+                <Form2 setFieldValue={setFieldValue} values={values} />
+              ) : (
+                <Form3
+                  setFieldValue={setFieldValue}
+                  values={values}
+                  categories={categories}
+                />
+              )}
               <ButtonGroup mt="5%" w="100%">
                 <Flex w="100%" justifyContent="space-between">
                   <Flex>
@@ -811,8 +844,14 @@ export default function Memberships() {
                       Next
                     </Button>
                   </Flex>
+
                   {step === 3 ? (
-                    <Button w="7rem" colorScheme="red" variant="solid" type="submit" >
+                    <Button
+                      w="7rem"
+                      colorScheme="red"
+                      variant="solid"
+                      type="submit"
+                    >
                       Submit
                     </Button>
                   ) : null}
@@ -820,9 +859,8 @@ export default function Memberships() {
               </ButtonGroup>
             </Box>
           </Form>
-        )
-        }
-      </Formik >
+        )}
+      </Formik>
     </>
   );
 }
