@@ -1,5 +1,6 @@
 import { Box, Flex, Text } from '@chakra-ui/react'
 import moment from 'moment/moment'
+
 import React from 'react'
 
 
@@ -17,6 +18,7 @@ export const Reusable = ({ fieldName, fieldValue }) => {
 }
 
 function Personalinfo({ details }) {
+    console.log(details)
     let obj = [
         {
             field: "First Name",
@@ -67,6 +69,10 @@ function Personalinfo({ details }) {
                         className="profile_img"
                         src={details.profilePhoto}
                         alt="profile"
+                        onError={({ currentTarget }) => {
+                            currentTarget.onerror = null; // prevents looping
+                            currentTarget.src = "https://nakedsecurity.sophos.com/wp-content/uploads/sites/2/2013/08/facebook-silhouette_thumb.jpg";
+                        }}
                     />
                 )}
                 {

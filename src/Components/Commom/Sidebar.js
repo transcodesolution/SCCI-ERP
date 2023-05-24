@@ -73,6 +73,7 @@ export const SidebarContent = ({ onClose, ...rest }) => {
             pos="fixed"
             h="full"
             {...rest}
+            className="sidebar_main"
         >
             <Flex h="20" alignItems="center" mx="8" justifyContent="space-between" >
                 <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
@@ -84,8 +85,8 @@ export const SidebarContent = ({ onClose, ...rest }) => {
                 console.log("Nav object:", nav);
                 return (
                     <>
-                        <NavLink className={'sidebar_hover'} to={`/${nav.route}`}>
-                            <NavItem key={nav.route} icon={nav.icon}>
+                        <NavLink className={'sidebar_hover done'} to={`/${nav.route}`}>
+                            <NavItem    key={nav.route} icon={nav.icon}>
                                 {nav.name}
                             </NavItem>
                         </NavLink>

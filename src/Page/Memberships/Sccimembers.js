@@ -18,20 +18,18 @@ import {
   MenuItem,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import Filtermodel from './Components/Filtermodel';
 
+let timeout;
 const Sccimembers = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const finalRef = React.useRef(null)
-  const [search, setSearch] = useState({
-    name: "",
-    category: "",
-    limit: "",
-  })
+  const [search, setSearch] = useState("")
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
   const [pageCount, setCountPage] = useState(1);
   const [members, setMembers] = useState([])
   const [categories, setCategories] = useState([])
+  const [filter, setFilter] = useState({})
 
   const navigate = useNavigate()
 
@@ -39,31 +37,26 @@ const Sccimembers = () => {
     setPage(event.selected + 1)
   }
 
-  const getFilterMammbet = () => {
-    toast.success('Transaction Added')
-    onClose()
+  const getFilterMember = (body) => {
     ApiPost(`/admin/member/get/all`, {
-      "page": page,
-      "limit": Number(search.limit),
-      "typefilter": search.category,
+      page,
+      limit,
+      ...body
     }).then((response) => {
+      onClose()
+      setPage(response?.data?.data?.state?.page)
+      setLimit(response?.data?.data?.state?.limit)
       setMembers(response?.data?.data?.member_data)
-    })
+      setCountPage(response?.data?.data?.state?.page_limit)
+
+    }).catch((error) => toast.error(error.message))
   }
-  const handleChange = (event) => {
-    let { name, value } = event.target
-    setSearch((old) => {
-      return {
-        ...old,
-        [name]: value
-      }
-    })
-  }
+
   const getAllMembers = () => {
     ApiPost('/admin/member/get/all', {
-      "page": page,
-      "limit": limit,
-      "typefilter": "",
+      page,
+      limit,
+      search
     }).then((response) => {
       setMembers(response?.data?.data?.member_data)
       setPage(response?.data?.data?.state?.page)
@@ -83,6 +76,14 @@ const Sccimembers = () => {
   useEffect(() => {
     getAllMembers()
   }, [page, limit])
+
+
+  useEffect(() => {
+    clearTimeout(timeout)
+    setTimeout(() => {
+      getAllMembers()
+    }, 1000);
+  }, [search])
 
 
 
@@ -130,7 +131,7 @@ const Sccimembers = () => {
       <div style={{ backgroundColor: "#fff", marginTop: "65px", padding: "20px", borderRadius: "10px", }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
           <label style={{ width: "50%", display: 'block' }}>
-            <Input bg={'whiteAlpha.600'} type="text" placeholder="Search" name='name' onChange={handleChange} />
+            <Input bg={'whiteAlpha.600'} type="text" placeholder="Search" name='name' onChange={(event) => setSearch(event.target.value)} />
           </label>
           <div style={{ display: 'flex' }}>
             <div style={{ marginRight: '15px' }}>
@@ -201,28 +202,9 @@ const Sccimembers = () => {
           </Box>
         </Flex>
       </div>
-      <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>SCCI MEMBERS-DETAILS</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Divider />
-            <Select placeholder='Select option' name='category' onChange={handleChange} >
-              {
-                categories.map((data) => <option value={data?._id}>{data?.name}</option>)
-              }
-            </Select>
-            <Input type='number' mt={4} placeholder='Limit' name='limit' value={search.limit} onChange={handleChange} />
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onClose}>
-              Close
-            </Button>
-            <Button colorScheme='green' onClick={() => getFilterMammbet()}>Apply</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+
+      <Filtermodel isOpen={isOpen} categories={categories} onClose={onClose} getFilterMember={getFilterMember} />
+
     </>
   )
 }

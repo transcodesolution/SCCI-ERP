@@ -7,8 +7,7 @@ function Mainmenu({ itemArray, choose }) {
     return <>
         <Box>
 
-            {itemArray?.map((item) => <Box border="1px solid #ddd" my={2} p={1} cursor='pointer' onClick={()=>choose(item)}>{item?.firstName}&nbsp;{item?.lastName}&nbsp;  <Badge colorScheme='red'>{item?.companyName}</Badge></Box>)
-
+            {itemArray?.map((item) => <Box border="1px solid #ddd" my={2} p={1} cursor='pointer' onClick={() => choose(item)}>{item?.firstName}&nbsp;{item?.lastName}&nbsp;  <Badge colorScheme='red'>{item?.companyName}</Badge></Box>)
             }
         </Box >
     </>

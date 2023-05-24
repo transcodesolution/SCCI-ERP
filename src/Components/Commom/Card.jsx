@@ -2,8 +2,7 @@ import React from 'react'
 import { Card, CardBody, CardFooter, Image, Stack, Heading, Text, Button, Divider } from '@chakra-ui/react'
 import { ButtonGroup } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
-import { setActiveTab } from '../../Reducers/addMembercard'
-import tabeData from '../../Page/Memberships/TabsData'
+import profileImg from '../../Assest/images/alt_profile.jpg'
 import { useNavigate } from 'react-router-dom'
 function Membercard({ data }) {
     const dispatch = useDispatch();
@@ -19,7 +18,11 @@ function Membercard({ data }) {
             <Card maxW='sm' className='hover_effect' >
                 <CardBody>
                     <Image
-                        src={data?.profilePhoto || 'https://nakedsecurity.sophos.com/wp-content/uploads/sites/2/2013/08/facebook-silhouette_thumb.jpg'}
+                        src={data?.profilePhoto || profileImg}
+                        onError={({ currentTarget }) => {
+                            currentTarget.onerror = null; // prevents looping
+                            currentTarget.src = profileImg;
+                        }}
                         alt='Green double couch with wooden legs'
                         borderRadius='lg'
                     />
