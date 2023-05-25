@@ -1,11 +1,8 @@
 import {
     FiHome,
-    FiTrendingUp,
-    FiCompass,
-
 } from 'react-icons/fi';
 import {
-    AiOutlineMail, AiOutlineLogout
+    AiOutlineMail
 } from 'react-icons/ai';
 import {
     BsPeople
@@ -43,11 +40,7 @@ export const data = [
         route: 'category',
         icon: TbCategory,
     },
-    {
-        name: 'Log Out',
-        route: 'logout',
-        icon: AiOutlineLogout,
-    },
+
 
 
 ]

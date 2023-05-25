@@ -1,0 +1,143 @@
+/*********************************************defult_css*************************************************/
+
+
+a,
+span,
+a:hover,
+a:active,
+button {
+    text-decoration: none;
+}
+
+a,
+div a:hover,
+div a:active,
+div a:focus,
+button {
+    text-decoration: none;
+    -webkit-transition: all 0.5s ease 0s;
+    -moz-transition: all 0.5s ease 0s;
+    -ms-transition: all 0.5s ease 0s;
+    -o-transition: all 0.5s ease 0s;
+    transition: all 0.5s ease 0s;
+}
+
+p {
+    margin: 0;
+}
+
+body h1,
+body h2,
+body h3,
+body h4,
+body h5,
+body h6 {
+    margin: 0;
+}
+
+ul,
+a {
+    list-style: none;
+    margin: 0;
+    padding: 15px;
+}
+
+img {
+    max-width: 100%;
+}
+
+.cm-overflow {
+    overflow: hidden;
+}
+
+.container {
+    padding: 0 15px;
+}
+
+/*******************************************************header*********************************************************/
+.main_card {
+    display: inline-block;
+    background-color: #86c5f933;
+    /* width: 100%; */
+    height: 100%;
+    border: 1px solid black;
+    margin: 15px;
+}   
+
+.sub_card {
+    padding: 15px;
+    display: flex;
+}
+
+.card_img {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+}
+
+.logo_img {
+    width: 100px;
+}
+
+.people_card {
+    width: 150px;
+    height: 100px;
+}
+
+.card_text {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.card_text_1 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0px 0px 0px 30px;
+}
+
+.main_text {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.card_in_1 {
+ 
+    /* padding: 0px 0px 25px; */
+    color: blue;
+}
+
+span.text_color {
+    color: brown;
+}
+
+.card_in_2 {
+    padding-left: 99px;
+    color: blue;
+}
+
+.card_in_3 {
+    padding-left: 30px;
+}
+
+.card_in_4 {
+}
+
+.card_in_5 {
+    line-height: 22px;
+    letter-spacing: 0.5px;
+}
+
+.people_sign {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.sign_text {
+    position: absolute;
+    bottom: 45%;
+}

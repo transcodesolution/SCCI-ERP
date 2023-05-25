@@ -1,21 +1,52 @@
 import { Box, Button, Divider, Flex, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Table, TableCaption, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react'
-import React from 'react'
+import React, { useState } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { toast } from 'react-toastify'
 import { Select } from '@chakra-ui/react'
-function Transactioninfo() {
+import { ApiPost } from '../../../Api/ApiData'
+function Transactioninfo({ details, get }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const finalRef = React.useRef(null)
+    console.log(details, '10')
+
+    const [body, setBody] = useState({
+        memberId: "",
+        type: "",
+        amount: "",
+        descripation: "",
+    })
+
 
     const handleAddAmount = () => {
-        toast.success('Transaction Added')
+        let sendBody = body
+        sendBody.memberId = details?._id
+        ApiPost('/admin/transaction/add', sendBody).then((response) => {
+            if (response.data.status == 200) {
+                toast.success('Transaction Added')
+                get()
+            } else {
+                toast.error(response?.data?.message)
+            }
+        }).catch((error) => toast.error(error.message))
+
         onClose()
     }
+
+    const handleChange = (event) => {
+        const { name, value } = event.target
+        setBody((old) => {
+            return {
+                ...old,
+                [name]: name == 'amount' ? Number(value) : value
+            }
+        })
+    }
+
     return (
         <>
             <Box textAlign={'right'}>
-                <Text >Membership Amount: <b> 3000</b></Text>
-                <Text>Pending Amount: <b> 2000</b></Text>
+                <Text >Membership Amount: <b> {details?.amount}</b></Text>
+                <Text>Pending Amount: <b> {details?.pendingAmount}</b></Text>
             </Box>
             <TableContainer mt={5}>
                 <Table variant='simple'>
@@ -30,30 +61,16 @@ function Transactioninfo() {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        <Tr>
-                            <Td>Payment Approve On 3rd Meeting</Td>
-                            <Td color={'green'}>20000 </Td>
-                            <Td >UPI</Td>
-                            <Td >02/06/2023</Td>
-                        </Tr>
-                        <Tr>
-                            <Td>Payment Approve On 3rd Meeting</Td>
-                            <Td color={'green'}>20000 </Td>
-                            <Td >UPI</Td>
-                            <Td >02/06/2023</Td>
-                        </Tr>
-                        <Tr>
-                            <Td>Payment Approve On 3rd Meeting</Td>
-                            <Td color={'green'}>20000 </Td>
-                            <Td >UPI</Td>
-                            <Td >02/06/2023</Td>
-                        </Tr>
-                        <Tr>
-                            <Td>Payment Approve On 3rd Meeting</Td>
-                            <Td color={'green'}>20000 </Td>
-                            <Td >UPI</Td>
-                            <Td >02/06/2023</Td>
-                        </Tr>
+                        {
+                            details?.transactions?.map((trans) => <Tr>
+                                <Td>{trans?.descripation}</Td>
+                                <Td color={'green'}>{trans?.amount} </Td>
+                                <Td >{trans?.paymentType}</Td>
+                                <Td >{trans?.createdAt}</Td>
+                            </Tr>)
+                        }
+
+
 
 
                     </Tbody>
@@ -80,15 +97,17 @@ function Transactioninfo() {
                     <ModalCloseButton />
                     <ModalBody>
                         <Flex>
-                            <Box flex={1}>Total: 3000</Box>
-                            <Box flex={1}>Pending: 2000</Box>
+                            <Box flex={1}>Total: {details?.amount}</Box>
+                            <Box flex={1}>Pending: {details?.pendingAmount}</Box>
                         </Flex>
                         <Divider />
-                        <Select placeholder='Select option'>
-                            <option value='0'>Membership</option>
-                            <option value='1'>Other</option>
+                        <Select placeholder='Select option' name='type' onChange={handleChange} >
+                            <option value='membership'>Membership</option>
+                            <option value='bulletIn'>Bulletin</option>
+                            <option value='other'>Other</option>
                         </Select>
-                        <Input type='number' mt={4} placeholder='Enter Amount' />
+                        <Input type='text' mt={4} placeholder='Enter Amount' value={body?.amount} name='amount' onChange={handleChange} />
+                        <Input type='text' mt={4} placeholder='Description' value={body?.descripation} name='descripation' onChange={handleChange} />
                     </ModalBody>
                     <ModalFooter>
                         <Button colorScheme='blue' mr={3} onClick={onClose}>

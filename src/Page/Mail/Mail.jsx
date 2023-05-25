@@ -26,6 +26,7 @@ import { Badge, Text } from "@chakra-ui/react";
 let timeout;
 function Mail() {
   const [content, setContent] = useState("");
+  const [subject, setSubject] = useState("")
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [categories, setCategories] = useState([]);
   const [categories_map, setCategories_map] = useState([]);
@@ -38,15 +39,17 @@ function Mail() {
   const [filter, setFilter] = useState({
     category: state?.category || [],
     individual: state?.individual || [],
+    content: ""
   });
 
   const handleSend = async (e) => {
     e.preventDefault();
-
     try {
       const requestBody = {
         memberIds: [...filter.individual],
         categoryIds: [...filter.category],
+        content,
+        subject
       };
       await ApiPost("/admin/mail", requestBody).then((res) => {
         console.log("first", res);
@@ -156,7 +159,6 @@ function Mail() {
 
   useEffect(() => {
     getAllCategory();
-
     return () => {
       setFilter({
         category: [],
@@ -191,6 +193,9 @@ function Mail() {
           </Text>
         </Box>
 
+        <Box mt={4}>
+          <Input placeholder="Subject Of Mail"  value={subject} onChange={(event)=>setSubject(event.target.value)}/>
+        </Box>
         <Box mt={4}>
           <Editor onChange={setContent} value={content} />
         </Box>

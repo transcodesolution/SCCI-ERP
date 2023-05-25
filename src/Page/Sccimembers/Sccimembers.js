@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from "react";
-import profile from "../../Assest/images/profile.png";
-import edit_icon from "../../Assest/images/edit_icon.png";
-import { SignupSchema } from "./SignupSchema";
 import { initialValues } from "./initialvalue";
-import { useDispatch } from "react-redux";
-import { addUser } from "../../Reducers/authReducer";
-import { useSelector } from "react-redux";
-// import { addStandard } from "./adddData";
-import { addFormData } from "../../Reducers/addScci";
 import { ApiPost } from "../../Api/ApiData";
-// import { addStandard } from "../../Reducers/addScci";
 import {
-  Progress,
   Box,
   ButtonGroup,
   Button,
@@ -22,27 +12,17 @@ import {
   FormLabel,
   Input,
   SimpleGrid,
-  InputLeftAddon,
-  InputGroup,
   Textarea,
-  FormHelperText,
-  InputRightElement,
   Select,
-  Text,
   Image,
   Checkbox,
 } from "@chakra-ui/react";
 import { AiOutlinePlus } from "react-icons/ai";
-
 import { handleUploadImage } from "../../Uploads/upload";
-
 import { Formik, Form, Field, ErrorMessage } from "formik";
-// import * as Yup from "yup";
 import Error from "../../Components/Commom/Error";
-import { Stack } from "react-bootstrap";
-import Category from "../Category/Cateory";
 import { toast } from "react-toastify";
-// import { initializeConnect } from "react-redux/es/components/connect";
+
 const Form1 = ({ values, setFieldValue }) => {
   return (
     <>
