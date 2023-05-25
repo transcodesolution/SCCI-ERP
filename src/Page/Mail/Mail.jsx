@@ -40,6 +40,21 @@ function Mail() {
     individual: state?.individual || [],
   });
 
+  const handleSend = async (e) => {
+    e.preventDefault();
+
+    try {
+      const requestBody = {
+        memberIds: [...filter.individual],
+        categoryIds: [...filter.category],
+      };
+      await ApiPost("/admin/mail", requestBody).then((res) => {
+        console.log("first", res);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const handleChange = (event) => {
     const { name, value } = event.target;
     if (name == "category") {
@@ -67,6 +82,7 @@ function Mail() {
     await ApiPost("/admin/member/type/get/all", { search: "" }).then(
       (response) => {
         setCategories(response?.data?.data);
+        console.log("first@@@", response?.data?.data[0]._id);
         let res = response.data.data;
         let obj = {};
         for (let i = 0; i < res.length; i++) {
@@ -156,8 +172,7 @@ function Mail() {
       <Container minW={"100%"} mt={16} bg={"white"}>
         <Box textAlign={"right"} py="4">
           <Button onClick={onOpen}>
-            {" "}
-            <AiOutlinePlus /> &nbsp; Select Members{" "}
+            <AiOutlinePlus /> &nbsp; Select Members
           </Button>
         </Box>
 
@@ -188,7 +203,7 @@ function Mail() {
           align="center"
           justifyContent="right"
         >
-          <Button colorScheme="red" variant="outline">
+          <Button colorScheme="red" variant="outline" onClick={handleSend}>
             Send <BsFillSendFill style={{ marginLeft: "6px" }} />
           </Button>
         </Stack>
@@ -198,7 +213,6 @@ function Mail() {
         </Heading>
 
         <Box height={600} overflowY={"scroll"} bg={"#f1f1f1a3"} p={4}>
-          {" "}
           <div
             dangerouslySetInnerHTML={{
               __html: content,
@@ -211,12 +225,9 @@ function Mail() {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>SCCI MEMBERS-DETAILS</ModalHeader>
-
           <ModalCloseButton />
-
           <ModalBody>
             <Divider />
-
             <Select
               placeholder="Select option"
               name="category"
@@ -246,7 +257,6 @@ function Mail() {
             />
 
             <Resultmenu itemArray={searchResult} choose={handleSelect} />
-
             <Box py={4}>
               {filter?.individual?.map((ind) => (
                 <Tags
