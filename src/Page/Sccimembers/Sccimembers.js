@@ -22,6 +22,7 @@ import { handleUploadImage } from "../../Uploads/upload";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Error from "../../Components/Commom/Error";
 import { toast } from "react-toastify";
+import moment from "moment";
 
 const Form1 = ({ values, setFieldValue }) => {
   return (
@@ -232,7 +233,7 @@ const Form1 = ({ values, setFieldValue }) => {
                   id="male"
                   value="male"
                   name="gender"
-                  // checked={formData.gender === 'male'}
+                // checked={formData.gender === 'male'}
                 />
                 <label htmlFor="male">Male</label>
 
@@ -531,21 +532,17 @@ const Form2 = ({ values, setFieldValue }) => {
 };
 
 const Form3 = ({ values, setFieldValue, categories, handleAmountChange }) => {
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-
+  console.log(values, 'f3')
   const [amount, setAmount] = useState("");
-  const [paytmParams, setPaytmParams] = useState(null);
-  const handleStartDateChange = (event) => {
+  const handleStartDateChange = (event, setFieldValue) => {
     const { value } = event.target;
-    setStartDate(value);
-
+    setFieldValue('startDate', value)
     const newEndDate = new Date(
       new Date(value).getFullYear() + 1,
       new Date(value).getMonth(),
       new Date(value).getDate()
     );
-    setEndDate(newEndDate.toISOString().substr(0, 10));
+    setFieldValue('endDate', moment(newEndDate).format('YYYY-MM-DD'));
   };
 
   // const handleAmountChange = (event) => {
@@ -579,7 +576,7 @@ const Form3 = ({ values, setFieldValue, categories, handleAmountChange }) => {
       </FormControl>
 
       <FormControl>
-        <Field name="category">
+        <Field name="type">
           {({ field }) => (
             <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
               <FormLabel htmlFor="category" fontWeight={"normal"}>
@@ -589,7 +586,7 @@ const Form3 = ({ values, setFieldValue, categories, handleAmountChange }) => {
                 name="category"
                 className="form-control"
                 onChange={(event) =>
-                  setFieldValue("category", event.target.value)
+                  setFieldValue("type", event.target.value)
                 }
               >
                 <option value="">Select Category</option>
@@ -619,9 +616,8 @@ const Form3 = ({ values, setFieldValue, categories, handleAmountChange }) => {
                   <Input
                     type="date"
                     id="startDate"
-                    value={startDate}
-                    onChange={handleStartDateChange}
-                    // {...field}
+                    onChange={(event) => handleStartDateChange(event, setFieldValue)}
+                  // {...field}
                   />
 
                   <ErrorMessage
@@ -643,10 +639,10 @@ const Form3 = ({ values, setFieldValue, categories, handleAmountChange }) => {
                     type="date"
                     id="endDate"
                     name="endDate"
-                    value={endDate}
                     disabled
+                    value={values?.endDate}
                     // max='2000-01-01'
-                    // {...field}
+                    {...field}
                   />
 
                   <ErrorMessage

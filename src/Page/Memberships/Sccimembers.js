@@ -1,78 +1,65 @@
-import { Box, Button, Flex, Input, Select, Spinner, Stack, useDisclosure } from "@chakra-ui/react";
+
 import Membercard from "../../Components/Commom/Card";
-import { SimpleGrid } from "@chakra-ui/react";
+import { Box, Button, Flex, Input, SimpleGrid, Stack, useDisclosure } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { ApiPost } from "../../Api/ApiData";
 import { AiOutlinePlus } from "react-icons/ai";
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-} from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
-import Filtermodel from './Components/Filtermodel';
+import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import Filtermodel from "./Components/Filtermodel";
 import { toast } from "react-toastify";
-import ReactPaginate from 'react-paginate';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
-import { saveAs } from 'file-saver';
-import * as XLSX from 'xlsx';
+import ReactPaginate from "react-paginate";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import { saveAs } from "file-saver";
+import * as XLSX from "xlsx";
+import Permissionmodel from "../../Components/Commom/Permissionmodel";
 let timeout;
 const Sccimembers = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const [search, setSearch] = useState("")
-  const [loading, setLoading] = useState(true)
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState({});
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [pageCount, setCountPage] = useState(1);
   const [members, setMembers] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [selectedId, setSelectedId] = useState("")
+  const [show, setShow] = useState(false)
+  const openModel = () => setShow(true)
+  const closeModel = () => setShow(false)
   const navigate = useNavigate();
-
   function handlePageClick(event) {
     setPage(event.selected + 1);
   }
-
   const getFilterMember = (body) => {
-    setLoading(true)
     ApiPost(`/admin/member/get/all`, {
       page,
       limit,
-      ...body
-    }).then((response) => {
-      setLoading(false)
-      onClose()
-      setPage(response?.data?.data?.state?.page)
-      setLimit(response?.data?.data?.state?.limit)
-      setMembers(response?.data?.data?.member_data)
-      setCountPage(response?.data?.data?.state?.page_limit)
-
-    }).catch((error) => {
-      toast.error(error.message)
-      setLoading(false)
+      ...body,
     })
-  }
-
-  const getAllMembers = (search) => {
-    setLoading(true)
-    ApiPost('/admin/member/get/all', {
+      .then((response) => {
+        onClose();
+        setPage(response?.data?.data?.state?.page);
+        setLimit(response?.data?.data?.state?.limit);
+        setMembers(response?.data?.data?.member_data);
+        setCountPage(response?.data?.data?.state?.page_limit);
+      })
+      .catch((error) => toast.error(error.message));
+  };
+  const getAllMembers = () => {
+    ApiPost("/admin/member/get/all", {
       page,
       limit,
-      search
+      search,
     }).then((response) => {
-      setLoading(false)
       setMembers(response?.data?.data?.member_data);
       setPage(response?.data?.data?.state?.page);
       setLimit(response?.data?.data?.state?.limit);
       setCountPage(response?.data?.data?.state?.page_limit);
       console.log("first", response?.data?.data?.member_data);
-    }).catch((error) => {
-      setLoading(false)
-      toast.error(error.message)
-    })
+    });
   };
-
   const getAllCategory = async () => {
     await ApiPost("/admin/member/type/get/all", { search: "" }).then(
       (response) => {
@@ -80,27 +67,18 @@ const Sccimembers = () => {
       }
     );
   };
-
   useEffect(() => {
     getAllCategory();
   }, []);
-
   useEffect(() => {
-    getAllMembers()
-  }, [page, limit])
-
-
-
-  const handleSearchChange = (event) => {
-    setSearch(event.target.value)
-    clearTimeout(timeout)
-    timeout = setTimeout(() => {
-      getAllMembers(event.target.value)
+    getAllMembers();
+  }, [page, limit]);
+  useEffect(() => {
+    clearTimeout(timeout);
+    setTimeout(() => {
+      getAllMembers();
     }, 1000);
-  }
-
-
-
+  }, [search]);
   const handleDownload = () => {
     const unit = "pt";
     const size = "A4";
@@ -131,7 +109,6 @@ const Sccimembers = () => {
     });
     doc.save("api-data.pdf");
   };
-
   const handleXLSX = () => {
     const headers = [["FirstName", "MiddleName", "LastName", "Phone", "Email"]];
     const data = members.map((post) => [
@@ -150,20 +127,32 @@ const Sccimembers = () => {
     });
     saveAs(new Blob([xlsxBuffer]), "api-data.xlsx");
   };
-
-  if (loading) {
-    return <Stack direction='row' height={'100vh'} display={'flex'} justifyContent={'center'} alignItems={'center'} spacing={4}>
-
-      <Spinner size='xl' />
-    </Stack>
-  }
-
   return (
     <>
-      <div style={{ backgroundColor: "#fff", marginTop: "65px", padding: "20px", borderRadius: "10px", }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
-          <label style={{ width: "50%", display: 'block' }}>
-            <Input bg={'whiteAlpha.600'} type="text" placeholder="Search" name='name' value={search} onChange={(event) => handleSearchChange(event)} />
+      <div
+        style={{
+          backgroundColor: "#fff",
+          marginTop: "65px",
+          padding: "20px",
+          borderRadius: "10px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
+          <label style={{ width: "50%", display: "block" }}>
+            <Input
+              bg={"whiteAlpha.600"}
+              type="text"
+              placeholder="Search"
+              name="name"
+              onChange={(event) => setSearch(event.target.value)}
+            />
           </label>
           <div style={{ display: "flex" }}>
             <div style={{ marginRight: "15px" }}>
@@ -207,7 +196,7 @@ const Sccimembers = () => {
         <Box style={{ marginTop: "20px" }}>
           <SimpleGrid columns={[1, 2, 2, 2, 3, 5, 5]} spacing={5}>
             {members.map((data) => (
-              <Membercard {...members} data={data} />
+              <Membercard data={data} openModel={openModel} setSelectedId={setSelectedId} />
             ))}
           </SimpleGrid>
         </Box>
@@ -216,7 +205,6 @@ const Sccimembers = () => {
             <Stack spacing={2} className="pagination_block">
               <div className="table-filter-info">
                 <ReactPaginate
-
                   pageCount={pageCount}
                   pageRangeDisplayed={2}
                   marginPagesDisplayed={1}
@@ -225,7 +213,6 @@ const Sccimembers = () => {
                   activeClassName={"active"}
                 />
               </div>
-
               <div class="my-2 my-md-0">
                 <div class="d-flex align-items-center pagination-drpdown">
                   <select
@@ -247,10 +234,15 @@ const Sccimembers = () => {
           </Box>
         </Flex>
       </div>
-
-      <Filtermodel isOpen={isOpen} categories={categories} onClose={onClose} getFilterMember={getFilterMember} />
+      <Filtermodel
+        isOpen={isOpen}
+        categories={categories}
+        onClose={onClose}
+        getFilterMember={getFilterMember}
+      />
+            <Permissionmodel {...{ closeModel, show, selectedId,getAllMembers }} />
 
     </>
   );
 };
-export default Sccimembers; 
+export default Sccimembers;

@@ -2,8 +2,10 @@ import React from 'react'
 import '../../../css/certificate.css'
 import logo from '../../../Assest/images/sccilogo.png'
 import ribbun from '../../../Assest/images/ribbon_img.png'
+import { Box, Button } from '@chakra-ui/react'
+import { AiOutlineDownload } from 'react-icons/ai'
 
-function Certificate() {
+function    Certificate({details}) {
     return (
         <div class="main_bg">
             <div class="back_img">
@@ -19,12 +21,12 @@ function Certificate() {
                         <p class="ribbon_text">This is to certify that</p>
                         <div class="form">
                             <label id="fname" for="fname">M/s. / Shri</label>
-                            <input type="text" id="fname" name="fname" />
+                            <input  type="text" id="fname" name="fname" value={details?.firstName + details?.middleName+details?.lastName } />
                         </div>
                         <p class="member_text">is Member of this Organisation for The Year<br />
                             1st April 2021 to 31st March 2022
                         </p>
-                        <div class="sign">
+                        <div class="sign sign_main">
                             <div class="sign_div1">
                                 <span></span>
                                 <p class="sign_text">Hon.Secretary</p>
@@ -40,6 +42,11 @@ function Certificate() {
                         </div>
                 </div>
             </div>
+            <Box textAlign={'center'} py={4}>
+
+            <Button >Download  &nbsp;<AiOutlineDownload/></Button>
+            </Box>
+
         </div>
     )
 }

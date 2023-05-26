@@ -22,7 +22,7 @@ export const initialValues = {
     "companyPhoto": [],
 
     "membershipType": "yearly",
-    "category": "",
+    "type": "",
     "startDate": new Date(),
     "endDate": new Date(),
     "amount": null, 

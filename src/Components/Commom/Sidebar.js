@@ -65,7 +65,6 @@ export default function SidebarWithHeader({ children }) {
 
 export const SidebarContent = ({ onClose, ...rest }) => {
     const dispatch = useDispatch();
-
     const handleLogOut = () => {
         dispatch(setLogout());
         toast.success("Logout Success");

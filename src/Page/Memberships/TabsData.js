@@ -40,7 +40,7 @@ const TabsData = () => {
                         <p><Personalinfo details={details} /></p>
                     </TabPanel>
                     <TabPanel>
-                        <p><Companyinfo details={details} /> </p>
+                        <p><Companyinfo values={details} /> </p>
                     </TabPanel>
                     <TabPanel>
                         <p><Membershipinfo details={details} /></p>

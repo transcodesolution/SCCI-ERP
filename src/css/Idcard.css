@@ -61,6 +61,7 @@ img {
     /* width: 100%; */
     height: 100%;
     border: 1px solid black;
+    margin: auto;
     margin: 15px;
 }   
 
@@ -137,7 +138,3 @@ span.text_color {
     align-items: flex-end;
 }
 
-.sign_text {
-    position: absolute;
-    bottom: 45%;
-}

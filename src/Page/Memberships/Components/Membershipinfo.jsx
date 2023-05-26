@@ -10,11 +10,14 @@ function Membershipinfo({ details }) {
     return (
         <>
             <Box mt={2} p='4'>
-                <Reusable fieldName={"Membership Type"} fieldValue={'Yearly'} />
+                <Reusable fieldName={"Membership ID"} fieldValue={details?.userId} />
+            </Box >
+            <Box mt={2} p='4' textTransform={'capitalize'}>
+                <Reusable fieldName={"Membership Type"} fieldValue={details?.membershipType} />
             </Box >
 
             <Box mt={2} p='4'>
-                <Reusable fieldName={'Category'} fieldValue={'IT'} />
+                <Reusable fieldName={'Category'} fieldValue={ details?.type?.name} />
             </Box >
 
             <Box mt={2} p='4'>
@@ -22,15 +25,17 @@ function Membershipinfo({ details }) {
             </Box >
 
             <Box mt={2} p='4'>
-                <Reusable fieldName={'End Date'} fieldValue={moment(details?.endDate).format('DD/MM/YYYY')} />
+                {details?.membershipType == 'yearly' ? <Reusable fieldName={'End Date'} fieldValue={moment(details?.endDate).format('DD/MM/YYYY')} /> : <Reusable fieldName={'End Date'} fieldValue={'Life Time'} />} 
+
+
             </Box >
 
             <Box mt={2} p='4'>
-                <Reusable fieldName={'Count Down'} fieldValue={<Countdown date={new Date(details?.endDate)} />} />
+                {details?.membershipType == 'yearly' && <Reusable fieldName={'Count Down'} fieldValue={<Countdown date={new Date(details?.endDate)} />} />}
             </Box >
 
             <Box mt={2} p='4'>
-                <Reusable fieldName={'Membership Amount'} fieldValue={details?.amount} />
+                <Reusable fieldName={'Membership Amount'} fieldValue={details?.amount || 0} />
             </Box >
 
             <Box mt={2} p='4'>

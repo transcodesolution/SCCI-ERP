@@ -6,7 +6,7 @@ import React from 'react'
 
 
 
-export const Reusable = ({ fieldName, fieldValue }) => {
+export const    Reusable = ({ fieldName, fieldValue }) => {
     return <>
         <Flex textAlign={'left'}>
             <Box flex={2} color={'gray.600'}>{fieldName}  </Box>

@@ -1,8 +1,7 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, memo } from 'react';
 import JoditEditor from 'jodit-react';
 import "jodit";
 import "jodit/build/jodit.min.css";
-import { useSelector } from 'react-redux';
 
 
 const copyStringToClipboard = function (str) {
@@ -210,4 +209,4 @@ const Editor = ({ onChange, value }) => {
         </div>
     );
 };
-export default Editor
+export default memo(Editor)

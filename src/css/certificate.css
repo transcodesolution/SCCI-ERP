@@ -65,16 +65,17 @@
     background-image: url(../Assest/images/bg_img1.png);
     background-repeat: no-repeat;
   
-    background-size: cover;
+    background-size: contain;
     display: flex;
     flex-direction: column;
     gap: 10px;
     text-align: center;
     align-items: center;
+    margin: auto;
   }
   .logo {
     margin: auto;
-    width: 250px;
+    width: 100px;
   }
   .text_div{
     padding: 30px;
@@ -108,7 +109,7 @@
     font-size: 32px;
     letter-spacing: 2px;
     color: #000;
-    margin-top: 15px;
+    /* margin-top: 15px; */
   }
   label#fname{
     font-family: 'Great Vibes', 'cursive';
@@ -128,9 +129,10 @@
   }
   p.logo_text1 {
     font-weight: 600;
-    font-size: 32px;
+    font-size: 12px;
     letter-spacing: 2px;
     color: #000;
+    margin: 0;
   }
   h4.logo_text2 {
       font-size: 18px;
@@ -140,7 +142,7 @@
       color: #fff;
       font-size: 25px;
   }  
-  p.sign_text{
+  .sign_main .sign_text{
     color: #000;
     font-size: 25px;
     font-weight: 600;
@@ -165,4 +167,9 @@
     margin-top: 4px;
     font-weight: 700;
   }
-  
+  #fname{
+    text-align: center;
+    font-size: 24px;
+    text-transform: capitalize;
+    font-weight: 600;
+  }

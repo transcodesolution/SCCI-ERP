@@ -157,11 +157,14 @@
 }
 
 .sidebar_main .active .css-1c01pt{
-  background: #0BC5EA !important;
+  background: #3182ce !important;
   color: white;
 }
 
 .dashboard_card svg{
   width: 100%;
   height: 100%;
+}
+.css-1c01pt:hover{
+  background-color: #3182ce !important;
 }
