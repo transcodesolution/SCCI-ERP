@@ -6,6 +6,8 @@ import Companyinfo from './Components/Company';
 import Membershipinfo from './Components/Membershipinfo';
 import Transactioninfo from './Components/Transactioninfo';
 import { useParams } from 'react-router-dom';
+import Idcard from './Components/Idcard';
+import Certificate from './Components/Certificate';
 
 const TabsData = () => {
 
@@ -30,19 +32,27 @@ const TabsData = () => {
                     <Tab>MEMBER'S COMPANY DETAILS</Tab>
                     <Tab>MEMBERSHIPS DETAILS</Tab>
                     <Tab>TRANSACTIONS DETAILS</Tab>
+                    <Tab>ID Card</Tab>
+                    <Tab>Certificate </Tab>
                 </TabList>
                 <TabPanels>
                     <TabPanel>
                         <p><Personalinfo details={details} /></p>
                     </TabPanel>
                     <TabPanel>
-                        <p><Companyinfo details={details} /> </p>
+                        <p><Companyinfo values={details} /> </p>
                     </TabPanel>
                     <TabPanel>
                         <p><Membershipinfo details={details} /></p>
                     </TabPanel>
                     <TabPanel>
-                        <p><Transactioninfo details={details} /></p>
+                        <p><Transactioninfo details={details} get={getMemberDetails} /></p>
+                    </TabPanel>
+                    <TabPanel>
+                        <p><Idcard details={details}  /></p>
+                    </TabPanel>
+                    <TabPanel>
+                        <p><Certificate details={details}  /></p>
                     </TabPanel>
                 </TabPanels>
             </Tabs>

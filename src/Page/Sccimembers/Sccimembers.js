@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-import profile from "../../Assest/images/profile.png";
-import edit_icon from "../../Assest/images/edit_icon.png";
-import { SignupSchema } from "./SignupSchema";
 import { initialValues } from "./initialvalue";
 import { useDispatch } from "react-redux";
 import { addUser } from "../../Reducers/authReducer";
@@ -9,7 +6,6 @@ import { useSelector } from "react-redux";
 import { addFormData } from "../../Reducers/addScci";
 import { ApiPost } from "../../Api/ApiData";
 import {
-  Progress,
   Box,
   ButtonGroup,
   Button,
@@ -22,7 +18,6 @@ import {
   SimpleGrid,
   Textarea,
   Select,
-  Text,
   Image,
   Checkbox,
 } from "@chakra-ui/react";
@@ -713,7 +708,7 @@ const Form3 = ({ values, setFieldValue, categories, handleChange }) => {
       </FormControl>
 
       <FormControl>
-        <Field name="category">
+        <Field name="type">
           {({ field }) => (
             <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
               <FormLabel htmlFor="category" fontWeight={"normal"}>
@@ -723,7 +718,7 @@ const Form3 = ({ values, setFieldValue, categories, handleChange }) => {
                 name="category"
                 className="form-control"
                 onChange={(event) =>
-                  setFieldValue("category", event.target.value)
+                  setFieldValue("type", event.target.value)
                 }
               >
                 <option value="">Select Category</option>

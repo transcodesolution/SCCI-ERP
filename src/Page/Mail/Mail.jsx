@@ -22,10 +22,12 @@ import Tags from "../../Components/Commom/Tags";
 import Resultmenu from "../../Components/Commom/Menu";
 import { useLocation } from "react-router-dom";
 import { Badge, Text } from "@chakra-ui/react";
+import { toast } from "react-toastify";
 
 let timeout;
 function Mail() {
   const [content, setContent] = useState("");
+  const [subject, setSubject] = useState("")
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [categories, setCategories] = useState([]);
   const [categories_map, setCategories_map] = useState([]);
@@ -34,25 +36,32 @@ function Mail() {
   const [name, setName] = useState("");
   const [searchResult, setsearchResult] = useState([]);
   const { state } = useLocation();
-
   const [filter, setFilter] = useState({
     category: state?.category || [],
     individual: state?.individual || [],
+    content: {
+      subject: "",
+      body: ""
+    }
   });
 
   const handleSend = async (e) => {
     e.preventDefault();
-
     try {
       const requestBody = {
         memberIds: [...filter.individual],
         categoryIds: [...filter.category],
+        content: {
+          body: content,
+          subject
+        }
+
       };
       await ApiPost("/admin/mail", requestBody).then((res) => {
-        console.log("first", res);
+        toast.success(res?.data?.message)
       });
     } catch (error) {
-      console.error(error);
+      toast.error(error.message);
     }
   };
   const handleChange = (event) => {
@@ -143,7 +152,7 @@ function Mail() {
     } else {
       setsearchResult([]);
     }
-    setName("");
+
   }, [name]);
 
   const handleClear = () => {
@@ -156,7 +165,6 @@ function Mail() {
 
   useEffect(() => {
     getAllCategory();
-
     return () => {
       setFilter({
         category: [],
@@ -191,6 +199,9 @@ function Mail() {
           </Text>
         </Box>
 
+        <Box mt={4}>
+          <Input placeholder="Subject Of Mail" value={subject} onChange={(event) => setSubject(event.target.value)} />
+        </Box>
         <Box mt={4}>
           <Editor onChange={setContent} value={content} />
         </Box>

@@ -1,4 +1,4 @@
-import { Box, Container, Flex, Heading, IconButton, Stack, Text, useBreakpointValue } from '@chakra-ui/react'
+import { Box, Container, Flex, Heading, IconButton, Image, Stack, Text, useBreakpointValue } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { Reusable } from './Personalinfo'
 import { BiLeftArrowAlt, BiRightArrowAlt } from 'react-icons/bi';
@@ -54,52 +54,52 @@ function Companyinfo({ values }) {
 
             <Box mt={2} p='4'>
 
-                <Reusable fieldName={"Compnay's Name"} fieldValue={'Transcode Solution'} />
+                <Reusable fieldName={"Compnay's Name"} fieldValue={values?.companyName} />
 
             </Box >
             <Box mt={2} p='4'>
 
-                <Reusable fieldName={'GST Number'} fieldValue={'ASFIHBH154FHA45'} />
+                <Reusable fieldName={'GST Number'} fieldValue={values?.gst} />
 
             </Box >
             <Box mt={2} p='4'>
 
-                <Reusable fieldName={'Company Address'} fieldValue={'130, Platinum Point , Mota Varachha , Surat , India'} />
+                <Reusable fieldName={'Company Address'} fieldValue={values?.address} />
 
             </Box >
             <Box mt={2} p='4'>
 
-                <Reusable fieldName={'City'} fieldValue={'Surat'} />
+                <Reusable fieldName={'City'} fieldValue={values?.city} />
             </Box >
             <Box mt={2} p='4'>
 
-                <Reusable fieldName={'State'} fieldValue={'Gujrat'} />
+                <Reusable fieldName={'State'} fieldValue={values?.state} />
             </Box >
             <Box mt={2} p='4'>
 
-                <Reusable fieldName={'Email'} fieldValue={'shubham@gmail.com'} />
+                <Reusable fieldName={'Email'} fieldValue={values?.email} />
             </Box >
             <Box mt={2} p='4'>
 
-                <Reusable fieldName={'WhatsApp number'} fieldValue={'9879868908'} />
+                <Reusable fieldName={'WhatsApp number'} fieldValue={values?.companyWhatsappNumber} />
             </Box >
             <Box mt={2} p='4'>
 
-                <Reusable fieldName={'Website'} fieldValue={'www.transcodesolution.com'} />
+                <Reusable fieldName={'Website'} fieldValue={values?.website} />
             </Box >
             <Box mt={2} p='4'>
 
-                <Reusable fieldName={'Business Details'} fieldValue={'To continuously grow as a Professional IT Development Company and be business partners to our domestic clients as well as global clients in international market.To continuously grow as a Professional IT Development Company and be business partners to our domestic clients as well as global clients in international market.'} />
+                <Reusable fieldName={'Business Details'} fieldValue={values?.businessDetails} />
             </Box >
             <Box mt={2} p='4'>
 
-                <Reusable fieldName={'About'} fieldValue={'To continuously grow as a Professional IT Development Company and be business partners to our domestic clients as well as global clients in international market.To continuously grow as a Professional IT Development Company and be business partners to our domestic clients as well as global clients in international market.To continuously grow as a Professional IT Development Company and be business partners to our domestic clients as well as global clients in international market.'} />
+                <Reusable fieldName={'About'} fieldValue={values?.about} />
             </Box >
 
 
             <Box
                 position={'relative'}
-                height={'600px'}
+                height={'300px'}
                 width={'full'}
                 overflow={'hidden'}>
                 {/* CSS files for react-slick */}
@@ -140,7 +140,7 @@ function Companyinfo({ values }) {
                 </IconButton>
                 {/* Slider */}
                 <Slider {...settings} ref={(slider) => setSlider(slider)}>
-                    {cards.map((card, index) => (
+                    {values?.companyPhoto?.map((card, index) => (
                         <Box
                             key={index}
                             height={'6xl'}
@@ -148,23 +148,10 @@ function Companyinfo({ values }) {
                             backgroundPosition="center"
                             backgroundRepeat="no-repeat"
                             backgroundSize="cover"
-                            backgroundImage={`url(${card.image})`}>
+                        >
                             {/* This is the block you need to change, to customize the caption */}
                             <Container size="container.lg" height="600px" position="relative">
-                                <Stack
-                                    spacing={6}
-                                    w={'full'}
-                                    maxW={'lg'}
-                                    position="absolute"
-                                    top="50%"
-                                    transform="translate(0, -50%)">
-                                    <Heading fontSize={{ base: '3xl', md: '4xl', lg: '5xl' }}>
-                                        {card.title}
-                                    </Heading>
-                                    <Text fontSize={{ base: 'md', lg: 'lg' }} color="GrayText">
-                                        {card.text}
-                                    </Text>
-                                </Stack>
+                                <Image src={card}/>
                             </Container>
                         </Box>
                     ))}

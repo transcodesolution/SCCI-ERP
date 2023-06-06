@@ -1,17 +1,18 @@
-import React from 'react'
-import { Card, CardBody, CardFooter, Image, Stack, Heading, Text, Button, Divider } from '@chakra-ui/react'
+import React, { useState } from 'react'
+import { Card, CardBody, CardFooter, Image, Stack, Heading, Text, Button } from '@chakra-ui/react'
 import { ButtonGroup } from 'react-bootstrap'
-import { useDispatch } from 'react-redux'
 import profileImg from '../../Assest/images/alt_profile.jpg'
 import { useNavigate } from 'react-router-dom'
-function Membercard({ data }) {
-    const dispatch = useDispatch();
+function Membercard({ data, openModel, setSelectedId }) {
+    console.log(data,'dls')
+
     const navigate = useNavigate()
     const heandleClick = (id) => {
-
         navigate(`/members_details/${id}`)
-
-
+    }
+    const handleOpenDeletePop = (id) => {
+        setSelectedId(id)
+        openModel()
     }
     return (
         <>
@@ -41,13 +42,19 @@ function Membercard({ data }) {
                     </Stack>
                 </CardBody>
 
-                <CardFooter>
-                    <ButtonGroup spacing='2'>
-                        <Button variant='solid' colorScheme='blue' onClick={() => heandleClick(data?._id)}>
+                <CardFooter >
+                   
+                        <Button variant='solid' size={'sm'} colorScheme='blue' onClick={() => heandleClick(data?._id)}>
                             Details
                         </Button>
+                        <Button variant='solid' size={'sm'} colorScheme='green' ml={2} onClick={() => navigate(`/members/edit/${data?._id}`)}>
+                            Edit
+                        </Button>
+                        <Button variant='solid' size={'sm'} colorScheme='orange' ml={2} onClick={() => handleOpenDeletePop(data?._id)}>
+                            Delete
+                        </Button>
 
-                    </ButtonGroup>
+                   
                 </CardFooter>
             </Card>
         </>

@@ -1,5 +1,6 @@
+
 import Membercard from "../../Components/Commom/Card";
-import { Box, Flex, Input, SimpleGrid, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Flex, Input, SimpleGrid, Stack, useDisclosure } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { ApiPost } from "../../Api/ApiData";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -12,7 +13,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
-import { Button, Stack } from "react-bootstrap";
+import Permissionmodel from "../../Components/Commom/Permissionmodel";
 let timeout;
 const Sccimembers = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -23,6 +24,10 @@ const Sccimembers = () => {
   const [pageCount, setCountPage] = useState(1);
   const [members, setMembers] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [selectedId, setSelectedId] = useState("")
+  const [show, setShow] = useState(false)
+  const openModel = () => setShow(true)
+  const closeModel = () => setShow(false)
   const navigate = useNavigate();
   function handlePageClick(event) {
     setPage(event.selected + 1);
@@ -191,7 +196,7 @@ const Sccimembers = () => {
         <Box style={{ marginTop: "20px" }}>
           <SimpleGrid columns={[1, 2, 2, 2, 3, 5, 5]} spacing={5}>
             {members.map((data) => (
-              <Membercard {...members} data={data} />
+              <Membercard data={data} openModel={openModel} setSelectedId={setSelectedId} />
             ))}
           </SimpleGrid>
         </Box>
@@ -235,6 +240,8 @@ const Sccimembers = () => {
         onClose={onClose}
         getFilterMember={getFilterMember}
       />
+            <Permissionmodel {...{ closeModel, show, selectedId,getAllMembers }} />
+
     </>
   );
 };

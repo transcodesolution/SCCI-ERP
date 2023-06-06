@@ -6,6 +6,7 @@ import Sccimembers from "../../Page/Memberships/Sccimembers";
 import Memberships from "../../Page/Sccimembers/Sccimembers";
 import Mail from "../../Page/Mail/Mail";
 import PersonalDetails from "../../Page/Memberships/Components/PersonalDetails";
+import Editmember from "../../Page/Sccimembers/Edit/Editmember";
 export const data = [
   {
     routeName: "dashboard",
@@ -19,6 +20,11 @@ export const data = [
   {
     routeName: "members_details/:id",
     component: <TabsData />
+
+  },
+  {
+    routeName: "members/edit/:id",
+    component: <Editmember />
 
   },
   {

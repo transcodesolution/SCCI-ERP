@@ -27,6 +27,7 @@ import { setLogout } from "../../Reducers/authReducer";
 import { toast } from "react-toastify";
 import { Image } from '@chakra-ui/react'
 import logo from '../../Assest/Logo/sccilogo.png'
+import { AiOutlineLogout } from "react-icons/ai";
 
 
 
@@ -63,6 +64,11 @@ export default function SidebarWithHeader({ children }) {
 }
 
 export const SidebarContent = ({ onClose, ...rest }) => {
+    const dispatch = useDispatch();
+    const handleLogOut = () => {
+        dispatch(setLogout());
+        toast.success("Logout Success");
+    };
     return (
         <Box
             transition="3s ease"
@@ -86,13 +92,17 @@ export const SidebarContent = ({ onClose, ...rest }) => {
                 return (
                     <>
                         <NavLink className={'sidebar_hover done'} to={`/${nav.route}`}>
-                            <NavItem    key={nav.route} icon={nav.icon}>
+                            <NavItem key={nav.route} icon={nav.icon}>
                                 {nav.name}
                             </NavItem>
                         </NavLink>
                     </>
                 );
             })}
+
+            <NavItem key={'log-out'} icon={AiOutlineLogout} onClick={handleLogOut}>
+                Log Out
+            </NavItem>
 
         </Box>
     );
