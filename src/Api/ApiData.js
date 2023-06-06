@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://192.168.29.178:2500/membership";
+const BASE_URL = "https://api.saurashtrachamber.org/membership";
 // const BASE_URL = "http://localhost:2500/membership";
 
 const defaultHeaders = {
