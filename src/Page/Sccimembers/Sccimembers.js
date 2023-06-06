@@ -6,10 +6,8 @@ import { initialValues } from "./initialvalue";
 import { useDispatch } from "react-redux";
 import { addUser } from "../../Reducers/authReducer";
 import { useSelector } from "react-redux";
-// import { addStandard } from "./adddData";
 import { addFormData } from "../../Reducers/addScci";
 import { ApiPost } from "../../Api/ApiData";
-// import { addStandard } from "../../Reducers/addScci";
 import {
   Progress,
   Box,
@@ -22,223 +20,200 @@ import {
   FormLabel,
   Input,
   SimpleGrid,
-  InputLeftAddon,
-  InputGroup,
   Textarea,
-  FormHelperText,
-  InputRightElement,
   Select,
   Text,
   Image,
   Checkbox,
 } from "@chakra-ui/react";
 import { AiOutlinePlus } from "react-icons/ai";
-
 import { handleUploadImage } from "../../Uploads/upload";
-
 import { Formik, Form, Field, ErrorMessage } from "formik";
-// import * as Yup from "yup";
 import Error from "../../Components/Commom/Error";
-import { Stack } from "react-bootstrap";
-import Category from "../Category/Cateory";
 import { toast } from "react-toastify";
-// import { initializeConnect } from "react-redux/es/components/connect";
+
 const Form1 = ({ values, setFieldValue }) => {
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleUploadImage = (event, callback) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        const image = e.target.result;
+        callback(image);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDeleteImage = (fieldName) => {
+    setFieldValue(fieldName, null);
+  };
+
+  const handleEditImage = () => {
+    setIsEditing(true);
+  };
+
+  const handleSaveImage = (fieldName) => {
+    setIsEditing(false);
+  };
+
   return (
     <>
       <Heading w="100%" textAlign={"center"} fontWeight="400" mb="2%">
         Members's Details
       </Heading>
 
-      <div className="profile_img_block">
-        {!values.profilePhoto ? (
-          <img
-            className="profile_img"
-            src={
-              "https://nakedsecurity.sophos.com/wp-content/uploads/sites/2/2013/08/facebook-silhouette_thumb.jpg"
+      <div className="d-flex justify-content-center">
+        <div className="profile_img_block mx-2">
+          {!values.profilePhoto ? (
+            <img
+              className="profile_img"
+              src={
+                "https://nakedsecurity.sophos.com/wp-content/uploads/sites/2/2013/08/facebook-silhouette_thumb.jpg"
+              }
+              alt="profile"
+            />
+          ) : (
+            <div className="profile_img_container">
+              <img
+                className="profile_img"
+                src={values.profilePhoto}
+                alt="profile"
+              />
+              <div className="image_actions">
+                <button onClick={() => handleDeleteImage("profilePhoto")}>
+                  Delete
+                </button>
+                <button>Edit</button>
+              </div>
+            </div>
+          )}
+
+          <input
+            type="file"
+            id="upload1"
+            onChange={(event) =>
+              handleUploadImage(event, (value) =>
+                setFieldValue("profilePhoto", value)
+              )
             }
-            alt="profile"
+            hidden
           />
-        ) : (
-          <img
-            className="profile_img"
-            src={values.profilePhoto}
-            alt="profile"
-          />
-        )}
+          <br />
+          <Button mb={4} color={"Highlight"}>
+            <label htmlFor="upload1">Upload</label>
+          </Button>
+        </div>
+        <div className="profile_img_block mx-2">
+          {!values.profilePhoto2 ? (
+            <img
+              className="profile_img"
+              src={
+                "https://nakedsecurity.sophos.com/wp-content/uploads/sites/2/2013/08/facebook-silhouette_thumb.jpg"
+              }
+              alt="profile"
+            />
+          ) : (
+            <div className="profile_img_container">
+              <img
+                className="profile_img"
+                src={values.profilePhoto2}
+                alt="profile"
+              />
+              <div className="image_actions">
+                <button onClick={() => handleDeleteImage("profilePhoto2")}>
+                  Delete
+                </button>
+                <button>Edit</button>
+              </div>
+            </div>
+          )}
 
-        <input
-          type={"file"}
-          id="upload"
-          onChange={(event) =>
-            handleUploadImage(event, (value) =>
-              setFieldValue("profilePhoto", value)
-            )
-          }
-          hidden
-        ></input>
-        <br></br>
-        <Button mb={4} color={"Highlight"}>
-          {" "}
-          <label htmlFor="upload"> Upload</label>
-        </Button>
+          <input
+            type="file"
+            id="upload2"
+            onChange={(event) =>
+              handleUploadImage(event, (value) =>
+                setFieldValue("profilePhoto2", value)
+              )
+            }
+            hidden
+          />
+          <br />
+          <Button mb={4} color={"Highlight"}>
+            <label htmlFor="upload2">Upload</label>
+          </Button>
+        </div>
       </div>
-
-      <Flex>
-        <FormControl mr="5%" className="firstName">
-          <Field name="firstName" style={{ mb: "10px" }}>
-            {({ field }) => (
-              <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
-                <FormLabel htmlFor="firstName" fontWeight={"normal"}>
-                  First Name
-                </FormLabel>
-                <Input
-                  type="text"
-                  id="firstName"
-                  placeholder="First Name"
-                  {...field}
-                />
-
-                <ErrorMessage
-                  name="firstName"
-                  render={(msg) => <Error msg={msg} />}
-                />
-              </FormControl>
-            )}
-          </Field>
-        </FormControl>
-
-        <FormControl mr="5%">
-          <Field name="middleName">
-            {({ field }) => (
-              <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
-                <FormLabel htmlFor="middleName" fontWeight={"normal"}>
-                  Middle Name
-                </FormLabel>
-                <Input
-                  type="text"
-                  id="middleName"
-                  placeholder="Middle Name"
-                  {...field}
-                />
-                <ErrorMessage
-                  name="middleName"
-                  render={(msg) => <Error msg={msg} />}
-                />
-              </FormControl>
-            )}
-          </Field>
-        </FormControl>
-        <FormControl mr="5%">
-          <Field name="lastName">
-            {({ field }) => (
-              <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
-                <FormLabel htmlFor="lastName" fontWeight={"normal"}>
-                  Last Name
-                </FormLabel>
-                <Input
-                  type="text"
-                  id="lastName"
-                  placeholder="Last Name"
-                  {...field}
-                />
-                <ErrorMessage
-                  name="lastName"
-                  render={(msg) => <Error msg={msg} />}
-                />
-              </FormControl>
-            )}
-          </Field>
-        </FormControl>
-      </Flex>
-
-      <Flex>
-        <FormControl mr="5%">
-          <Field name="phone">
-            {({ field }) => (
-              <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
-                <FormLabel htmlFor="phone" fontWeight={"normal"}>
-                  Contect Number
-                </FormLabel>
-                <Input
-                  type="number"
-                  id="phone"
-                  placeholder="Contect Number"
-                  {...field}
-                />
-                <ErrorMessage
-                  name="phone"
-                  render={(msg) => <Error msg={msg} />}
-                />
-              </FormControl>
-            )}
-          </Field>
-        </FormControl>
-
-        <FormControl mr="2%">
-          <Field name="email">
-            {({ field }) => (
-              <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
-                <FormLabel htmlFor="email" fontWeight={"normal"}>
-                  Email
-                </FormLabel>
-                <Input type="email" id="email" placeholder="Email" {...field} />
-                <ErrorMessage
-                  name="email"
-                  render={(msg) => <Error msg={msg} />}
-                />
-              </FormControl>
-            )}
-          </Field>
-        </FormControl>
-      </Flex>
-
-      <Flex>
-        <FormControl mr="5%">
-          <Field name="dob">
-            {({ field }) => (
-              <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
-                <FormLabel htmlFor="dob" fontWeight={"normal"}>
-                  Date Of Birth
-                </FormLabel>
-                <Input
-                  type="date"
-                  id="dob"
-                  placeholder="Date Of Birth"
-                  {...field}
-                />
-                <ErrorMessage
-                  name="dob"
-                  render={(msg) => <Error msg={msg} />}
-                />
-              </FormControl>
-            )}
-          </Field>
-        </FormControl>
-
-        <FormControl mr="5%">
-          <Field name="whatsappNumber">
-            {({ field }) => (
-              <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
-                <FormLabel htmlFor="whatsappNumber" fontWeight={"normal"}>
-                  WhatsApp Number
-                </FormLabel>
-                <Input
-                  type="number"
-                  id="whatsappNumber"
-                  placeholder="WhatsApp Number"
-                  {...field}
-                />
-                <ErrorMessage
-                  name="whatsappNumber"
-                  render={(msg) => <Error msg={msg} />}
-                />
-              </FormControl>
-            )}
-          </Field>
-        </FormControl>
-      </Flex>
-
+      <h3>FIRST USER</h3>
+      <FormControl mr="5%" className="firstName">
+        <Field name="name">
+          {({ field }) => (
+            <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+              <FormLabel htmlFor="name" fontWeight={"normal"}>
+                Name
+              </FormLabel>
+              <Input
+                type="text"
+                id="name"
+                name="name"
+                placeholder=" Name"
+                {...field}
+              />
+              <ErrorMessage name="name" render={(msg) => <Error msg={msg} />} />
+            </FormControl>
+          )}
+        </Field>
+      </FormControl>
+      <FormControl mr="5%">
+        <Field name="phone">
+          {({ field }) => (
+            <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+              <FormLabel htmlFor="phone" fontWeight={"normal"}>
+                Contact Number
+              </FormLabel>
+              <Input
+                type="number"
+                id="phone"
+                name="phone"
+                placeholder="Contact Number"
+                {...field}
+              />
+              <ErrorMessage
+                name="phone"
+                render={(msg) => <Error msg={msg} />}
+              />
+            </FormControl>
+          )}
+        </Field>
+      </FormControl>
+      <FormControl mr="2%">
+        <Field name="email">
+          {({ field }) => (
+            <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+              <FormLabel htmlFor="email" fontWeight={"normal"}>
+                Email
+              </FormLabel>
+              <Input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Email"
+                {...field}
+              />
+              <ErrorMessage
+                name="email"
+                render={(msg) => <Error msg={msg} />}
+              />
+            </FormControl>
+          )}
+        </Field>
+      </FormControl>
       <FormControl mt={4} mr="5%" className="radio_btn">
         <Field name="gender">
           {({ field }) => (
@@ -247,20 +222,108 @@ const Form1 = ({ values, setFieldValue }) => {
                 Gender
               </FormLabel>
               <div className="">
-                <Field
-                  type="radio"
-                  id="male"
-                  value="male"
-                  name="gender"
-                  // checked={formData.gender === 'male'}
-                />
-                <label htmlFor="male">Male</label>
+                <Field type="radio" id="male1" value="male" name="gender" />
+                <label htmlFor="male1">Male</label>
 
-                <Field type="radio" id="female" value="female" name="gender" />
-                <label htmlFor="female">Female</label>
+                <Field type="radio" id="female1" value="female" name="gender" />
+                <label htmlFor="female1">Female</label>
               </div>
               <ErrorMessage
                 name="gender"
+                render={(msg) => <Error msg={msg} />}
+              />
+            </>
+          )}
+        </Field>
+      </FormControl>
+      <h3 className="mt-3">SECOND USER</h3>
+      <FormControl mr="5%" className="firstName">
+        <Field name="name2">
+          {({ field }) => (
+            <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+              <FormLabel htmlFor="name2" fontWeight={"normal"}>
+                Name
+              </FormLabel>
+              <Input
+                type="text"
+                id="name2"
+                name="name2"
+                placeholder=" Name"
+                {...field}
+              />
+              <ErrorMessage
+                name="name2"
+                render={(msg) => <Error msg={msg} />}
+              />
+            </FormControl>
+          )}
+        </Field>
+      </FormControl>
+      <FormControl mr="5%">
+        <Field name="phone2">
+          {({ field }) => (
+            <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+              <FormLabel htmlFor="phone2" fontWeight={"normal"}>
+                Contact Number
+              </FormLabel>
+              <Input
+                type="number"
+                id="phone2"
+                name="phone2"
+                placeholder="Contact Number"
+                {...field}
+              />
+              <ErrorMessage
+                name="phone2"
+                render={(msg) => <Error msg={msg} />}
+              />
+            </FormControl>
+          )}
+        </Field>
+      </FormControl>
+      <FormControl mr="2%">
+        <Field name="email2">
+          {({ field }) => (
+            <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+              <FormLabel htmlFor="email2" fontWeight={"normal"}>
+                Email
+              </FormLabel>
+              <Input
+                type="email"
+                id="email2"
+                name="email2"
+                placeholder="Email"
+                {...field}
+              />
+              <ErrorMessage
+                name="email2"
+                render={(msg) => <Error msg={msg} />}
+              />
+            </FormControl>
+          )}
+        </Field>
+      </FormControl>
+      <FormControl mt={4} mr="5%" className="radio_btn">
+        <Field name="user2.gender">
+          {({ field }) => (
+            <>
+              <FormLabel htmlFor="gender2" fontWeight={"normal"}>
+                Gender
+              </FormLabel>
+              <div className="">
+                <Field type="radio" id="male1" value="male" name="gender2" />
+                <label htmlFor="male1">Male</label>
+
+                <Field
+                  type="radio"
+                  id="female1"
+                  value="female"
+                  name="gender2"
+                />
+                <label htmlFor="female1">Female</label>
+              </div>
+              <ErrorMessage
+                name="gender2"
                 render={(msg) => <Error msg={msg} />}
               />
             </>
@@ -550,27 +613,79 @@ const Form2 = ({ values, setFieldValue }) => {
   );
 };
 
-const Form3 = ({ values, setFieldValue, categories, handleAmountChange }) => {
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-
-  const [amount, setAmount] = useState("");
+const Form3 = ({ values, setFieldValue, categories, handleChange }) => {
+  const [startDate, setStartDate] = useState({ firstDate: "", endDate: "" });
+  const [totalDays, setTotalDays] = useState(0);
+  const [amount, setAmount] = useState(0);
   const [paytmParams, setPaytmParams] = useState(null);
-  const handleStartDateChange = (event) => {
-    const { value } = event.target;
-    setStartDate(value);
+  const [memberBulletingFees, setMemberBulletingFees] = useState("");
+  const [membershipSubscripationFees, setMembershipSubscripationFees] =
+    useState("");
+  const [gstAmount, setGstAmount] = useState("");
 
-    const newEndDate = new Date(
-      new Date(value).getFullYear() + 1,
-      new Date(value).getMonth(),
-      new Date(value).getDate()
-    );
-    setEndDate(newEndDate.toISOString().substr(0, 10));
+  // const calculateSum = () => {
+  //   const num1 = parseFloat(values.memberBulletingFees) || 0;
+  //   const num2 = parseFloat(values.membershipSubscripationFees) || 0;
+  //   const num3 = parseFloat(values.gstAmount) || 0;
+  //   // return num1 + num2 + num3;
+  //   const sum = num1 + num2 + num3;
+  //   setAmount(sum);
+  //   return sum;
+  //   // console.log("first", data);
+  // };
+
+  // const sum = calculateSum();
+  // // console.log("first", sum);
+
+  useEffect(() => {
+    const calculateSum = () => {
+      const num1 = parseFloat(values.memberBulletingFees) || 0;
+      const num2 = parseFloat(values.membershipSubscripationFees) || 0;
+      const num3 = parseFloat(values.gstAmount) || 0;
+
+      const sum = num1 + num2 + num3;
+      setAmount(sum);
+      console.log("sum", amount);
+    };
+
+    calculateSum();
+  }, [values]);
+  const handleFirstDateChange = (e) => {
+    const selectedDate = new Date(e.target.value);
+    const year = selectedDate.getFullYear();
+    const month = selectedDate.getMonth();
+
+    let lastYear = year;
+    let lastMonth = 2;
+
+    if (month >= 2) {
+      lastYear += 1;
+    }
+
+    const endDate = new Date(lastYear, lastMonth, 31);
+    const updatedDateRange = {
+      ...startDate,
+      firstDate: e.target.value,
+      endDate: endDate.toISOString().split("T")[0],
+    };
+    setStartDate(updatedDateRange);
+
+    calculateTotalDays(updatedDateRange);
   };
 
-  // const handleAmountChange = (event) => {
-  //   setAmount(event.target.value);
-  // };
+  const calculateTotalDays = (startDate) => {
+    const start = new Date(startDate.firstDate);
+    const end = new Date(startDate.endDate);
+    const totalDays = Math.round((end - start) / (1000 * 60 * 60 * 24));
+    setTotalDays(totalDays);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(startDate.firstDate);
+    console.log(startDate.endDate);
+    console.log(totalDays);
+  };
 
   return (
     <>
@@ -588,7 +703,6 @@ const Form3 = ({ values, setFieldValue, categories, handleAmountChange }) => {
                 <option value="yearly">Yearly</option>
                 <option value="petron">Petron</option>
               </Field>
-
               <ErrorMessage
                 name="membershipType"
                 render={(msg) => <Error msg={msg} />}
@@ -639,11 +753,9 @@ const Form3 = ({ values, setFieldValue, categories, handleAmountChange }) => {
                   <Input
                     type="date"
                     id="startDate"
-                    value={startDate}
-                    onChange={handleStartDateChange}
-                    // {...field}
+                    value={startDate.firstDate}
+                    onChange={handleFirstDateChange}
                   />
-
                   <ErrorMessage
                     name="startDate"
                     render={(msg) => <Error msg={msg} />}
@@ -663,12 +775,13 @@ const Form3 = ({ values, setFieldValue, categories, handleAmountChange }) => {
                     type="date"
                     id="endDate"
                     name="endDate"
-                    value={endDate}
+                    value={startDate.endDate}
                     disabled
-                    // max='2000-01-01'
-                    // {...field}
                   />
-
+                  <div>
+                    <label>Total Days</label>
+                    <input type="text" value={totalDays} disabled />
+                  </div>
                   <ErrorMessage
                     name="endDate"
                     render={(msg) => <Error msg={msg} />}
@@ -681,6 +794,85 @@ const Form3 = ({ values, setFieldValue, categories, handleAmountChange }) => {
       )}
       <Flex>
         <FormControl mr="5%">
+          <Field name="memberBulletingFees">
+            {({ field }) => (
+              <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+                <FormLabel htmlFor="memberBulletingFees" fontWeight={"normal"}>
+                  Membership SubscripationFees
+                </FormLabel>
+                <Input
+                  type="number"
+                  id="memberBulletingFees"
+                  name="memberBulletingFees"
+                  placeholder="Member Bulleting Fees "
+                  value={memberBulletingFees}
+                  onChange={handleChange}
+                  {...field}
+                />
+                <ErrorMessage
+                  name="memberBulletingFees"
+                  render={(msg) => <Error msg={msg} />}
+                />
+              </FormControl>
+            )}
+          </Field>
+        </FormControl>
+        <FormControl mr="5%">
+          <Field name="membershipSubscripationFees">
+            {({ field }) => (
+              <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+                <FormLabel
+                  htmlFor="membershipSubscripationFees"
+                  fontWeight={"normal"}
+                >
+                  Membership Subscripation Fees
+                </FormLabel>
+                <Input
+                  type="number"
+                  id="membershipSubscripationFees"
+                  placeholder="Membership Subscripation Fees "
+                  name="membershipSubscripationFees"
+                  value={membershipSubscripationFees}
+                  onChange={handleChange}
+                  {...field}
+                />
+                <ErrorMessage
+                  name="membershipSubscripationFees"
+                  render={(msg) => <Error msg={msg} />}
+                />
+              </FormControl>
+            )}
+          </Field>
+        </FormControl>
+        <FormControl>
+          <Field name="gstAmount">
+            {({ field }) => (
+              <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+                <FormLabel htmlFor="gstAmount" fontWeight={"normal"}>
+                  GST Amount
+                </FormLabel>
+                <Input
+                  type="number"
+                  id="gstAmount"
+                  name="gstAmount"
+                  placeholder="GST Amount "
+                  value={gstAmount}
+                  onChange={handleChange}
+                  {...field}
+                />
+
+                <ErrorMessage
+                  name="gstAmount"
+                  render={(msg) => <Error msg={msg} />}
+                />
+              </FormControl>
+            )}
+          </Field>
+        </FormControl>
+      </Flex>
+
+      <Flex>
+        <FormControl mr="5%">
           <Field name="amount">
             {({ field }) => (
               <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
@@ -691,10 +883,10 @@ const Form3 = ({ values, setFieldValue, categories, handleAmountChange }) => {
                   type="number"
                   id="amount"
                   placeholder="Amount"
+                  name="amount"
                   value={amount}
-                  // {...field}
+                  readOnly
                   onChange={(event) => {
-                    // handleAmountChange(event)
                     setAmount(event?.target?.value);
                     setFieldValue("pendingAmount", event?.target?.value);
                     setFieldValue("amount", event?.target?.value);
@@ -759,7 +951,7 @@ export default function Memberships({ data }) {
   const handleSubmit = (values, resetForm) => {
     ApiPost("/admin/member/add", values)
       .then((response) => {
-        console.log("***********", response);
+        console.log("***********", response.data);
 
         toast.success("Member Added Successfully");
         resetForm({
