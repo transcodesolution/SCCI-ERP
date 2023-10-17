@@ -380,22 +380,43 @@ const Form2 = ({ values, setFieldValue }) => {
         </FormControl>
       </Flex>
       <FormControl as={GridItem} colSpan={[6, 6, null, 2]}>
-        <Field name="address">
-          {({ field }) => (
-            <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
-              <FormLabel htmlFor="address" fontWeight={"normal"}>
-                Company Address
-              </FormLabel>
-              <Textarea id="address" placeholder="Company Address" {...field} />
-              <ErrorMessage
-                name="address"
-                render={(msg) => <Error msg={msg} />}
-              />
-            </FormControl>
-          )}
-        </Field>
-      </FormControl>
-
+      <Field
+        name="address"
+        validate={(value) => {
+          if (!value) {
+            return "Company Address is required";
+          }
+          const wordCount = value.split(/\s+/).length;
+          if (wordCount < 30) {
+            return "Company Address cannot exceed 30 words";
+          }
+        }}
+      >
+        {({ field }) => (
+          <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+            <FormLabel htmlFor="address" fontWeight={"normal"}>
+              Company Address
+            </FormLabel>
+            <Textarea
+              id="address"
+              placeholder="Company Address"
+              {...field}
+              onInput={(e) => {
+                const wordCount = e.target.value.split(/\s+/).length;
+                if (wordCount > 30) {
+                  e.target.setCustomValidity("Company Address cannot exceed 30 words");
+                } else {
+                  e.target.setCustomValidity("");
+                }
+              }}
+            />
+            <ErrorMessage name="address" render={(msg) => <Error msg={msg} />} />
+          </FormControl>
+        )}
+      </Field>
+    </FormControl>
+    
+    
       <Flex mt={4}>
         <FormControl mr="5%">
           <Field name="city">
@@ -561,84 +582,35 @@ const Form2 = ({ values, setFieldValue }) => {
           )}
         </Field>
       </FormControl>
-
-      <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
-        <FormLabel fontWeight={"normal"}>Add Company's Photo</FormLabel>
-
-        <SimpleGrid columns={5} spacing={1} mt={8}>
-          {values?.companyPhoto?.map((singlePhoto) => (
-            <Image
-              boxSize="300px"
-              objectFit="cover"
-              src={singlePhoto}
-              alt="Dan Abramov"
-            />
-          ))}
-
-          <Box
-            minH={100}
-            minW={100}
-            bg="whitesmoke"
-            margin={"auto"}
-            border={"1px dashed #ddd"}
-            borderRadius={"50%"}
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
-          >
-            {" "}
-            <label htmlFor="companyPhoto">
-              {" "}
-              <AiOutlinePlus size={"40"} />
-            </label>
-          </Box>
-        </SimpleGrid>
-      </FormControl>
-      <input
-        type="file"
-        hidden
-        id="companyPhoto"
-        onChange={(event) =>
-          handleUploadImage(event, (data) =>
-            setFieldValue("companyPhoto", [...values?.companyPhoto, data])
-          )
-        }
-      ></input>
     </>
   );
 };
 
 const Form3 = ({ values, setFieldValue, categories, handleChange }) => {
   const [startDate, setStartDate] = useState({ firstDate: "", endDate: "" });
+  const [entryDate, setEntryDate] = useState("");
   const [totalDays, setTotalDays] = useState(0);
   const [amount, setAmount] = useState(0);
   const [paytmParams, setPaytmParams] = useState(null);
   const [memberBulletingFees, setMemberBulletingFees] = useState("");
+  const [admissionFees, setAdmissionFees] = useState("");
   const [membershipSubscripationFees, setMembershipSubscripationFees] =
     useState("");
+  const [otherAmount, setOtherAmount] = useState("");
+  const [petronFees, setPetronFees] = useState("");
+  const [petronBulletinFees, setPetronBulletinFees] = useState("");
   const [gstAmount, setGstAmount] = useState("");
-
-  // const calculateSum = () => {
-  //   const num1 = parseFloat(values.memberBulletingFees) || 0;
-  //   const num2 = parseFloat(values.membershipSubscripationFees) || 0;
-  //   const num3 = parseFloat(values.gstAmount) || 0;
-  //   // return num1 + num2 + num3;
-  //   const sum = num1 + num2 + num3;
-  //   setAmount(sum);
-  //   return sum;
-  //   // console.log("first", data);
-  // };
-
-  // const sum = calculateSum();
-  // // console.log("first", sum);
 
   useEffect(() => {
     const calculateSum = () => {
       const num1 = parseFloat(values.memberBulletingFees) || 0;
       const num2 = parseFloat(values.membershipSubscripationFees) || 0;
       const num3 = parseFloat(values.gstAmount) || 0;
-
-      const sum = num1 + num2 + num3;
+      const num4 = parseFloat(values.admissionFees) || 0;
+      const num5 = parseFloat(values.otherAmount) || 0;
+      const num6 = parseFloat(values.petronFees) || 0;
+      const num7 = parseFloat(values.petronBulletinFees) || 0;
+      const sum = num1 + num2 + num3 + num4 + num5 + num6 + num7;
       setAmount(sum);
       console.log("sum", amount);
     };
@@ -663,10 +635,18 @@ const Form3 = ({ values, setFieldValue, categories, handleChange }) => {
       firstDate: e.target.value,
       endDate: endDate.toISOString().split("T")[0],
     };
+
+    setFieldValue("endDate", endDate);
+    setFieldValue("startDate", selectedDate)
     setStartDate(updatedDateRange);
 
     calculateTotalDays(updatedDateRange);
   };
+
+  const handleEntryDateChange = (e) => {
+    const selectedDate = e.target.value;
+    setEntryDate(selectedDate);
+  }
 
   const calculateTotalDays = (startDate) => {
     const start = new Date(startDate.firstDate);
@@ -677,9 +657,15 @@ const Form3 = ({ values, setFieldValue, categories, handleChange }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(startDate.firstDate);
-    console.log(startDate.endDate);
-    console.log(totalDays);
+
+    const start = new Date(values.startDate.firstDate);
+    const end = new Date(values.startDate.endDate);
+    const calculatedEndDate = new Date(values.startDate.endDate);
+    calculatedEndDate.setDate(start.getDate() + totalDays); // Assuming totalDays is a valid variable
+
+    console.log("Start Date:", start.toISOString().split("T")[0]);
+    console.log("Calculated End Date:", calculatedEndDate.toISOString().split("T")[0]);
+    console.log("Total Days:", totalDays);
   };
 
   return (
@@ -696,7 +682,7 @@ const Form3 = ({ values, setFieldValue, categories, handleChange }) => {
               </FormLabel>
               <Field as={Select} {...field} id="membershipType">
                 <option value="yearly">Yearly</option>
-                <option value="petron">Petron</option>
+                <option value="petron">Patron (life time)</option>
               </Field>
               <ErrorMessage
                 name="membershipType"
@@ -736,6 +722,30 @@ const Form3 = ({ values, setFieldValue, categories, handleChange }) => {
         </Field>
       </FormControl>
 
+      {values?.membershipType == "petron" && (
+        <FormControl mr="5%">
+          <Field name="entryDate">
+            {({ field }) => (
+              <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+                <FormLabel htmlFor="startDate" fontWeight={"normal"}>
+                  Entry Date
+                </FormLabel>
+                <Input
+                  type="date"
+                  id="entryDate"
+                  value={entryDate}
+                  onChange={handleEntryDateChange}
+                />
+                <ErrorMessage
+                  name="entryDate"
+                  render={(msg) => <Error msg={msg} />}
+                />
+              </FormControl>
+            )}
+          </Field>
+        </FormControl>
+      )}
+
       {values?.membershipType == "yearly" && (
         <Flex>
           <FormControl mr="5%">
@@ -748,7 +758,7 @@ const Form3 = ({ values, setFieldValue, categories, handleChange }) => {
                   <Input
                     type="date"
                     id="startDate"
-                    value={startDate.firstDate}
+                    value={values.startDate.firstDate}
                     onChange={handleFirstDateChange}
                   />
                   <ErrorMessage
@@ -787,97 +797,280 @@ const Form3 = ({ values, setFieldValue, categories, handleChange }) => {
           </FormControl>
         </Flex>
       )}
-      <Flex>
-        <FormControl mr="5%">
-          <Field name="memberBulletingFees">
-            {({ field }) => (
-              <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
-                <FormLabel htmlFor="memberBulletingFees" fontWeight={"normal"}>
-                  Membership SubscripationFees
-                </FormLabel>
-                <Input
-                  type="number"
-                  id="memberBulletingFees"
-                  name="memberBulletingFees"
-                  placeholder="Member Bulleting Fees "
-                  value={memberBulletingFees}
-                  onChange={handleChange}
-                  {...field}
-                />
-                <ErrorMessage
-                  name="memberBulletingFees"
-                  render={(msg) => <Error msg={msg} />}
-                />
-              </FormControl>
-            )}
-          </Field>
-        </FormControl>
-        <FormControl mr="5%">
-          <Field name="membershipSubscripationFees">
-            {({ field }) => (
-              <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
-                <FormLabel
-                  htmlFor="membershipSubscripationFees"
-                  fontWeight={"normal"}
-                >
-                  Membership Subscripation Fees
-                </FormLabel>
-                <Input
-                  type="number"
-                  id="membershipSubscripationFees"
-                  placeholder="Membership Subscripation Fees "
-                  name="membershipSubscripationFees"
-                  value={membershipSubscripationFees}
-                  onChange={handleChange}
-                  {...field}
-                />
-                <ErrorMessage
-                  name="membershipSubscripationFees"
-                  render={(msg) => <Error msg={msg} />}
-                />
-              </FormControl>
-            )}
-          </Field>
-        </FormControl>
-        <FormControl>
-          <Field name="gstAmount">
-            {({ field }) => (
-              <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
-                <FormLabel htmlFor="gstAmount" fontWeight={"normal"}>
-                  GST Amount
-                </FormLabel>
-                <Input
-                  type="number"
-                  id="gstAmount"
-                  name="gstAmount"
-                  placeholder="GST Amount "
-                  value={gstAmount}
-                  onChange={handleChange}
-                  {...field}
-                />
+      {values?.membershipType == "yearly" && (
+        <Flex>
+          <FormControl mr="5%">
+            <Field name="admissionFees">
+              {({ field }) => (
+                <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+                  <FormLabel
+                    htmlFor="admissionFees"
+                    fontWeight={"normal"}
+                  >
+                    Admission Fees
+                  </FormLabel>
+                  <Input
+                    type="number"
+                    id="admissionFees"
+                    placeholder="Admission Fees"
+                    name="admissionFees"
+                    value={admissionFees}
+                    onChange={handleChange}
+                    {...field}
+                  />
+                  <ErrorMessage
+                    name="admissionFees"
+                    render={(msg) => <Error msg={msg} />}
+                  />
+                </FormControl>
+              )}
+            </Field>
+          </FormControl>
+          <FormControl mr="5%">
+            <Field name="memberBulletingFees">
+              {({ field }) => (
+                <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+                  <FormLabel htmlFor="memberBulletingFees" fontWeight={"normal"}>
+                    Member Bulleting Fees
+                  </FormLabel>
+                  <Input
+                    type="number"
+                    id="memberBulletingFees"
+                    name="memberBulletingFees"
+                    placeholder="Member Bulleting Fees"
+                    value={memberBulletingFees}
+                    onChange={handleChange}
+                    {...field}
+                  />
+                  <ErrorMessage
+                    name="memberBulletingFees"
+                    render={(msg) => <Error msg={msg} />}
+                  />
+                </FormControl>
+              )}
+            </Field>
+          </FormControl>
+          <FormControl mr="5%">
+            <Field name="membershipSubscripationFees">
+              {({ field }) => (
+                <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+                  <FormLabel
+                    htmlFor="membershipSubscripationFees"
+                    fontWeight={"normal"}
+                  >
+                    Membership Subscripation Fees
+                  </FormLabel>
+                  <Input
+                    type="number"
+                    id="membershipSubscripationFees"
+                    placeholder="Membership Subscripation Fees "
+                    name="membershipSubscripationFees"
+                    value={membershipSubscripationFees}
+                    onChange={handleChange}
+                    {...field}
+                  />
+                  <ErrorMessage
+                    name="membershipSubscripationFees"
+                    render={(msg) => <Error msg={msg} />}
+                  />
+                </FormControl>
+              )}
+            </Field>
+          </FormControl>
+          <FormControl mr="5%">
+            <Field name="otherAmount">
+              {({ field }) => (
+                <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+                  <FormLabel htmlFor="otherAmount" fontWeight={"normal"}>
+                    Other Amount
+                  </FormLabel>
+                  <Input
+                    type="number"
+                    id="otherAmount"
+                    name="otherAmount"
+                    placeholder="Other Amount"
+                    value={otherAmount}
+                    onChange={handleChange}
+                    {...field}
+                  />
+                  <ErrorMessage
+                    name="otherAmount"
+                    render={(msg) => <Error msg={msg} />}
+                  />
+                </FormControl>
+              )}
+            </Field>
+          </FormControl>
+          <FormControl>
+            <Field name="gstAmount">
+              {({ field }) => (
+                <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+                  <FormLabel htmlFor="gstAmount" fontWeight={"normal"}>
+                    GST Amount
+                  </FormLabel>
+                  <Input
+                    type="number"
+                    id="gstAmount"
+                    name="gstAmount"
+                    placeholder="GST Amount "
+                    value={gstAmount}
+                    onChange={handleChange}
+                    {...field}
+                  />
 
-                <ErrorMessage
-                  name="gstAmount"
-                  render={(msg) => <Error msg={msg} />}
-                />
-              </FormControl>
-            )}
-          </Field>
-        </FormControl>
-      </Flex>
+                  <ErrorMessage
+                    name="gstAmount"
+                    render={(msg) => <Error msg={msg} />}
+                  />
+                </FormControl>
+              )}
+            </Field>
+          </FormControl>
+        </Flex>
+      )}
+      {values?.membershipType == "petron" && (
+        <Flex>
+          <FormControl mr="5%">
+            <Field name="admissionFees">
+              {({ field }) => (
+                <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+                  <FormLabel
+                    htmlFor="admissionFees"
+                    fontWeight={"normal"}
+                  >
+                    admission Fees
+                  </FormLabel>
+                  <Input
+                    type="number"
+                    id="admissionFees"
+                    placeholder="Admission Fees"
+                    name="admissionFees"
+                    value={admissionFees}
+                    onChange={handleChange}
+                    {...field}
+                  />
+                  <ErrorMessage
+                    name="admissionFees"
+                    render={(msg) => <Error msg={msg} />}
+                  />
+                </FormControl>
+              )}
+            </Field>
+          </FormControl>
+          <FormControl mr="5%">
+            <Field name="petronFees">
+              {({ field }) => (
+                <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+                  <FormLabel htmlFor="petronFees" fontWeight={"normal"}>
+                    Petron Fees
+                  </FormLabel>
+                  <Input
+                    type="number"
+                    id="petronFees"
+                    name="petronFees"
+                    placeholder="Petron Fees"
+                    value={petronFees}
+                    onChange={handleChange}
+                    {...field}
+                  />
+                  <ErrorMessage
+                    name="petronFees"
+                    render={(msg) => <Error msg={msg} />}
+                  />
+                </FormControl>
+              )}
+            </Field>
+          </FormControl>
+          <FormControl mr="5%">
+            <Field name="petronBulletinFees">
+              {({ field }) => (
+                <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+                  <FormLabel
+                    htmlFor="petronBulletinFees"
+                    fontWeight={"normal"}
+                  >
+                    Petron Bulletin Fees
+                  </FormLabel>
+                  <Input
+                    type="number"
+                    id="petronBulletinFees"
+                    placeholder="Petron Bulletin Fees"
+                    name="petronBulletinFees"
+                    value={petronBulletinFees}
+                    onChange={handleChange}
+                    {...field}
+                  />
+                  <ErrorMessage
+                    name="petronBulletinFees"
+                    render={(msg) => <Error msg={msg} />}
+                  />
+                </FormControl>
+              )}
+            </Field>
+          </FormControl>
+          <FormControl mr="5%">
+            <Field name="otherAmount">
+              {({ field }) => (
+                <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+                  <FormLabel htmlFor="otherAmount" fontWeight={"normal"}>
+                    Other Amount
+                  </FormLabel>
+                  <Input
+                    type="number"
+                    id="otherAmount"
+                    name="otherAmount"
+                    placeholder="Other Amount"
+                    value={otherAmount}
+                    onChange={handleChange}
+                    {...field}
+                  />
+                  <ErrorMessage
+                    name="otherAmount"
+                    render={(msg) => <Error msg={msg} />}
+                  />
+                </FormControl>
+              )}
+            </Field>
+          </FormControl>
+          <FormControl>
+            <Field name="gstAmount">
+              {({ field }) => (
+                <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
+                  <FormLabel htmlFor="gstAmount" fontWeight={"normal"}>
+                    GST Amount
+                  </FormLabel>
+                  <Input
+                    type="number"
+                    id="gstAmount"
+                    name="gstAmount"
+                    placeholder="GST Amount "
+                    value={gstAmount}
+                    onChange={handleChange}
+                    {...field}
+                  />
 
+                  <ErrorMessage
+                    name="gstAmount"
+                    render={(msg) => <Error msg={msg} />}
+                  />
+                </FormControl>
+              )}
+            </Field>
+          </FormControl>
+        </Flex>
+      )}
       <Flex>
         <FormControl mr="5%">
           <Field name="amount">
             {({ field }) => (
               <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
                 <FormLabel htmlFor="amount" fontWeight={"normal"}>
-                  Amount
+                  Total Amout
                 </FormLabel>
                 <Input
                   type="number"
                   id="amount"
-                  placeholder="Amount"
+                  placeholder="Total Amout"
                   name="amount"
                   value={amount}
                   readOnly
@@ -895,45 +1088,26 @@ const Form3 = ({ values, setFieldValue, categories, handleChange }) => {
             )}
           </Field>
         </FormControl>
-        <FormControl>
-          <Field name="pendingAmount">
+      </Flex>
+
+      {values?.membershipType == "petron" && (
+        <FormControl as={GridItem} colSpan={[6, 3]}>
+          <Field as="Checkbox" name="isSubscribeToBulletin">
             {({ field }) => (
-              <FormControl style={{ marginTop: 10, marginBottom: 12 }}>
-                <FormLabel htmlFor="pendingAmount" fontWeight={"normal"}>
-                  Pending Amount
-                </FormLabel>
-                <Input
-                  type="number"
-                  id="pendingAmount"
-                  placeholder="Pending Amount"
-                  {...field}
-                />
+              <>
+                <Checkbox {...field} colorScheme="green">
+                  isSubscribeToBulletin
+                </Checkbox>
+
                 <ErrorMessage
-                  name="pendingAmount"
+                  name="isSubscribeToBulletin"
                   render={(msg) => <Error msg={msg} />}
                 />
-              </FormControl>
+              </>
             )}
           </Field>
         </FormControl>
-      </Flex>
-
-      <FormControl as={GridItem} colSpan={[6, 3]}>
-        <Field as="Checkbox" name="isSubscribeToBulletin">
-          {({ field }) => (
-            <>
-              <Checkbox {...field} colorScheme="green">
-                isSubscribeToBulletin
-              </Checkbox>
-
-              <ErrorMessage
-                name="isSubscribeToBulletin"
-                render={(msg) => <Error msg={msg} />}
-              />
-            </>
-          )}
-        </Field>
-      </FormControl>
+      )}
     </>
   );
 };
@@ -992,6 +1166,7 @@ export default function Memberships({ data }) {
               ) : step === 2 ? (
                 <Form2 setFieldValue={setFieldValue} values={values} />
               ) : (
+
                 <Form3
                   setFieldValue={setFieldValue}
                   values={values}
